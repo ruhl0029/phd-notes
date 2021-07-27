@@ -1,0 +1,483 @@
+\documentclass[11pt, pdftex]{article}
+\usepackage{setspace,palatino,multirow}
+\usepackage{amsmath,amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{pdflscape}
+\usepackage{layout}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tikz}
+
+
+\usepackage{fancyhdr}
+    \setlength{\headheight}{16pt}
+    \pagestyle{fancy}
+    \rhead[]{Kim J. Ruhl}
+    \lhead[]{Ricardian Models}
+    \cfoot[]{\textit{Subject to change.  This version \today.}}
+    \rfoot[]{ $|$ \thepage}
+
+\usepackage[pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue, bookmarks=true, pdfstartview={FitV}]{hyperref}
+
+
+%lanuage=american gets the punctuation within the quotes, natbib=true means use \citet as "\citeasnoun"
+\usepackage[backend=bibtex, natbib=true, sorting=nyt, style=authoryear, bibstyle=authoryear, isbn=false, language=american]{biblatex}
+    \addbibresource{D:\\Dropbox\\Biblio\\bib_master.bib}
+    \renewbibmacro{in:}{}           %Kill the default "in:"
+    \setlength\bibitemsep{0.25cm}
+
+%Kill the dot between volume and number, then add paren around the number.
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+%No header
+\DefineBibliographyStrings{english}{%
+  references = {------------------},
+}
+
+%titlesec definitions
+\titlespacing*\section{0pt}{0pt}{0pt}
+\titlespacing*\subsection{0pt}{0pt}{0pt}
+
+
+\setstretch{1.1}
+\raggedbottom
+
+\setitemize{itemsep=0.5ex}
+\setenumerate{itemsep=0.5ex}
+
+\setlength{\parskip}{0.2cm}
+\setlength{\voffset}{0.0cm}
+\setlength{\headsep}{5mm}           %space after header, before content
+\setlength{\parindent}{0cm}         %no indents
+\setlength{\textheight}{9.25in}
+
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\std}{\mathrm{std}}
+\newcommand{\cor}{\mathrm{cor}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\ph}{\phantom}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\sig}{\sigma}
+\newcommand{\lam}{\lambda}
+
+
+\begin{document}
+\ph{whatever}
+\medskip
+
+\centerline{\bf \Large Ricardian Models}
+\medskip
+[\textit{My notes are in beta.  If you see something that doesn't look right, I would greatly appreciate a heads-up.}]
+
+
+In Ricardian models, first laid out in \citet{ricardo}, each country in the economy can produce each good, but countries differ in how well they can produce each good.  Trade arises to exploit comparative advantage: A country exports the goods it is relatively good at producing and imports goods that other countries are relatively good at producing.
+
+\section{Two countries and a continuum of goods}
+The simplest Ricardian model is the two-good two-country example from undergrad textbooks, but moving to a continuum of goods isn't much more difficult, and sets the stage for the multicountry model to come.  This is the model in \citet{dornbusch}.
+
+The model is static. The economy consists of two countries, country 1 and country 2.\footnote{This example is based on one from Tim Kehoe, \url{http://www.econ.umn.edu/~tkehoe/teaching.html}} Each country is endowed with labor, $\bar{\ell_1} =\bar{ \ell_2}$.  Technologies exist to produce a continuum of goods, indexed by $k \in [0,1]$, but these technologies differ across countries. There are no costs to trading in this version of the economy;  we will add them below.  The technology to produce good $k$ in country $i$ is
+\begin{equation}
+  y_i(k) = \frac{1}{a_i(k)} \ell_i(k),
+\end{equation}
+where $a_i(k)$ is the \textit{unit labor requirement} for producing good $k$ in country $i$. $y_j(k)$ is the output of good $k$ produced in country $i$ and $\ell_i(k)$ is the amount of labor used in production. Assume that the unit labor requirement functions are
+\begin{align}
+  a_1(k) = & \exp\left(\alpha \left(1-k\right)\right)\\
+  a_2(k) = & \exp\left(\alpha k\right).
+\end{align}
+
+The functional form for $a_i$ can be quite general.  What is important is that we can rank each good according to the relative productivity of producing it in each country.  For a two-country economy, this is simple --- we will do it graphically below --- but in a multicountry world, this is nontrivial.
+
+The representative consumer in each country chooses consumption of each good to maximize
+\begin{equation}
+  \int_0^1 \!\! \log \left(c_i\left(k\right)\right) \, dk
+\end{equation}
+subject to the budget constraint,
+\begin{equation}
+  \int_0^1 \!\! p_i(k) c_i(k) \, dk = w_i \bar{\ell_i}
+\end{equation}
+and the constraint that consumption is nonnegative.  Firms are perfectly competitive.  The representative firm in country $i$ producing good $k$ solves
+\begin{align}\label{eq:prodProblem}
+  \max_ {\ell_i(z)} & \;\; p(k)y_i(k) - w_i \ell_i(k) \\
+  \text{s.t.} \quad & \frac{1}{a_i(k)} \ell_i(k) \geq y_i(k). \notag
+\end{align}
+Market clearing has total consumption equal to total output,  labor supply equal to labor demand in each country, and trade balance
+\begin{align}
+  y_1(k) + y_2(k) & = c_1(k)+c_2(k), \quad \quad k \in [0,1] \\
+  \int_0^1 \! \! \ell_i(k) \, dk & = \bar{\ell_i},\quad \quad i = 1,2\\
+  \int_{K_{21}} \!\! \! p_1(k)c_1(k)\,dk&=\int_{K_{12}} \! \!\! p_2(k)c_2(k) \,dk, \label{eq:tb}
+\end{align}
+where $K_{ij}$ is the set of goods that are produced in country $i$ and consumed in country $j$, i.e., the goods exported from $i$ to $j$.
+
+Let $p_i(k)$ be the price of good $z$ in country $i$.  An equilibrium of this model is prices $\{w_1, w_2, p_1(k), p_2(k)\}$ and quantities $\{\ell_1(k), \ell_2(k), c_1(k), c_2(k), y_1(k), y_2(k) \}$ such that households and firms solve their maximization problems and markets clear.
+
+The symmetry of the problem implies that an equilibrium exists in which $w_1=w_2=1$.  What is the pattern of trade?  The household in country 1 will purchase good $z$ from whichever producer provides it at the lowest cost, so the price of the good in country $i$ is
+\begin{equation} \label{eq:dfsMin}
+  p_i(k) = \min \left\{p_1(k),p_2(k) \right\}.
+\end{equation}
+From the producer's problem in \eqref{eq:prodProblem}, the price of the good produced in country $i$ is $p_i(k) = w_i a_i(k)$.  So country 1 will produce the good for consumption in both countries 1 and 2 whenever
+\begin{align}
+  a_1(k)w_1 & < a_2(k)w_2 \\
+  \frac{a_1(k)}{a_2(k)} & < \frac{w_2}{w_1}, \label{eq:relProd}
+\end{align}
+and country 2 will produce $k$ for consumption in both countries when the opposite inequality is true. Let's plot the two parts of \eqref{eq:relProd} in figure \ref{fig:dfs}.
+
+\begin{figure}[ht]
+\caption{The pattern of trade.}
+\label{fig:dfs}
+\centering
+\begin{tikzpicture}[xscale=7, yscale=3.5]
+  \draw[<->] (0,2)--(0,0)--(1.1,0)  node[below]{$k$};
+  \draw[thick, domain=0:1] plot(\x, {exp(0.5 - 2*0.5*\x)} ) node[right]{$\frac{a_1(k)}{a_2(k)}$};
+  \draw[-, thick] (0,1)--(1,1) node[right]{$\frac{w_2}{w_1}$};
+  \draw[dashed] (0.5,-0.1) node[below]{$\hat{k}$}--(0.5,1);
+  \node[below, align=left] at (0.25,0) { \footnotesize Country 2 exports\\ \footnotesize these goods};
+  \node[below, align=left] at (0.75,0) {\footnotesize Country 1 exports\\ \footnotesize these goods};
+\end{tikzpicture}
+\end{figure}
+
+To find $\hat{k}$, the cutoff good, solve
+\begin{equation}\label{eq:indif}
+  w_1\exp\left(\alpha \left(1-\hat{k}\right)\right) = w_2\exp\left(\alpha \hat{k}\right),
+\end{equation}
+which, in this symmetric world, yields $\hat{k}=0.5$. The equilibrium prices are
+\begin{equation}
+  p_1(k)=p_2(k) = \begin{cases}
+    w_2\exp(\alpha k) & k \in [0,\hat{k}]\\
+    w_1\exp(\alpha (1-k)) & k \in (\hat{k},1]
+  \end{cases}
+\end{equation}
+consumption is
+\begin{equation}
+  c_i(k) = \frac{w_i\bar{\ell_i}}{p_i(k)}    \quad i=1,2
+\end{equation}
+and production and employment are
+\begin{equation}
+\begin{array}{lllll}
+y_1(k)=0 & \ell_1(k)=0, & y_2(k)=\frac{w_1\bar{\ell_1}+w_2\bar{\ell_2}}{p(k)} & \ell_2(k)=2\bar{\ell_2} & k \in [0,\hat{k}]\\
+y_1(k)=\frac{w_1\bar{\ell_1}+w_2\bar{\ell_2}}{p(k)} & \ell_1(k)=2\bar{\ell_1}, & y_2(k)=0 &\ell_2(k)=0 & k \in (\hat{k},1].
+\end{array}
+\end{equation}
+
+The symmetric case is very easy to solve.  The nonsymmetric case is pretty simple, too. In the nonsymmetric model, set $w_1=1$ and solve \eqref{eq:indif} and \eqref{eq:tb} for $w_2$ and $\hat{k}$.
+
+\subsection*{Two countries and a continuum of goods with tariffs}
+Assume each country imposes a tariff of $\tau_{ij}$ on imports from the other country.  The tariff revenue is lump-sum rebated to the household.  The rest of the model is the same as the previous model.
+
+The new budget constraint is
+\begin{equation}\label{eq:newBc}
+  \int_{K_{ii}} \!\! p_{ii}(k) c_i(k) \, dk + \int_{K_{ji}} \!\! p_{jj}(k)(1+\tau_{ij}) c_i(k) \, dk= w_i \bar{\ell_i} + T_i
+\end{equation}
+and the tariff revenue conditions are
+\begin{align}
+  T_i = \int_{K_{ji}} \!\! \tau_{ij} p_{jj}(k) c_{i}(k) \, dk.
+\end{align}
+The first integral in \eqref{eq:newBc} is the expenditure on goods produced domestically and the second integral is import expenditure. Additionally, the balanced trade condition should have trade flows valued at pre-tariff prices.  (In the symmetric world this doesn't matter, but in a nonsymmetric world it does.)
+
+What is the pattern of trade in this model?  For country 2 to import a good from country 1,
+\begin{equation}\label{eq:cutoffTariff2}
+ w_1 a_1(k) (1+\tau_{12}) < w_2 a_2(k) \rightarrow \frac{a_1(k)}{a_2(k)}<\frac{w_2}{w_1(1+\tau_{12})}
+\end{equation}
+must be true, and for country 1 to import the good from country 2, it must be that
+\begin{equation}\label{eq:cutoffTariff1}
+ w_1 a_1(k)  > w_2 a_2(k)(1+\tau_{21})\rightarrow \frac{a_1(k)}{a_2(k)}>\frac{w_2}{w_1}(1+\tau_{12}).
+\end{equation}
+As we did in the previous model, we can plot these conditions.
+\begin{figure}[ht]
+\caption{Tariffs generate a range of nontraded goods.}
+\centering
+\begin{tikzpicture}[xscale=7, yscale=3.5]
+  \draw[<->] (0,2)--(0,0)--(1.1,0)  node[below]{$k$};
+  \draw[thick, domain=0:1] plot(\x, {exp(0.5 - 2*0.5*\x)} ) node[right]{$\frac{a_1(k)}{a_2(k)}$};
+  \draw[-, thick] (0,0.85)--(1,0.85) node[right]{$\frac{w_2}{w_1(1+\tau_{12})}$};
+  \draw[-, thick] (0,1.15)--(1,1.15) node[right]{$\frac{w_2(1+\tau_{21})}{w_1}$};
+  \draw[dashed] (0.36,-0.1) node[below]{$\widehat{k_2}$}--(0.36,1.15);
+  \draw[dashed] (0.66,-0.1) node[below]{$\widehat{k_1}$}--(0.66,0.85);
+  \node[below, align=left] at (0.15,0) {\footnotesize Country 2 exports\\ \footnotesize these goods};
+  \node[below, align=left] at (0.89,0) {\footnotesize Country 1 exports\\ \footnotesize these goods};
+  \node[below, align=left] at (0.51,0) {\footnotesize Nontraded \\ \footnotesize goods};
+\end{tikzpicture}
+\end{figure}
+
+The tariffs generate a range of goods, $(\widehat{k_2},\widehat{k_1})$, such that
+\begin{equation}
+  \frac{w_2}{w_1(1+\tau_{12})}<\frac{a_1(k)}{a_2(k)}  < \frac{w_2(1+\tau_{21})}{w_1} \qquad k \in [\hat{k_2},\hat{k_1}].
+\end{equation}
+These are goods for which the comparative advantage of production is not strong enough to overcome trade costs.  The goods are not exported by either country, and we have incomplete specialization in this economy. [The slope of the relative productivity curve summarizes the strength of comparative advantage in the world.]
+
+In the symmetric case, solving for equilibrium requires solving \eqref{eq:cutoffTariff2} and \eqref{eq:cutoffTariff1} (with equality imposed) for $\widehat{k_1}$ and $\widehat{k_2}$. In the nonsymmetric world, add $w_2$ and the balanced trade condition.
+
+\section{The multicountry world}
+The \citet{dornbusch} model's elegance follows from the ability to sort the goods according to the comparative advantage of one country relative to another.  With only two countries, we can always ``rename" the goods to satisfy this ordering.  How do we generalize this ordering to a world with more than two countries? In a deterministic environment, this is a difficult task. \citet{wilson} is a notable study.
+
+\citet{EK02} shows that the multicountry Ricardian model can be quite tractable when productivity is random.  For any good $k$, the set of prices offered by the countries of the world becomes a random variable, and with a judicious distributional assumption for productivity, the model is extremely tractable.
+
+Two kinds of results here. 1) Making productivity stochastic makes the multicountry model work. 2) Guessing Frechet makes the thing closed form.  We can abandon 2) and 1) still works great, we just need a computer to solve the model.
+
+\subsection*{Technologies}
+As in \citet{dornbusch}, there are an continuum of goods, indexed $k \in [0,1]$.  The technology to produce a good is given by
+\begin{equation}\label{eq:ekProduction}
+    y_i(k)=z_i(k)\ell_i(k),
+\end{equation}
+where $z$ --- the marginal productivity --- is now a random variable.  Producers are competitive and all producers of good $k$ in country $i$ receive the same productivity draw, $z_i(k)$.  Goods are subject to iceberg trade costs, $\tau_{ij}$, with the normalization that $\tau_{ii}=0$.
+
+The productivity draws, $z$, are distributed according to a Type II extreme value distribution, or a Frechet  distribution,
+\begin{equation}\label{eq:frechet}
+    F_i(z) = \mathrm{prob}\left(z_i\left(k \right) \leq z \right)=e^{-T_i z^{-\theta}}.
+\end{equation}
+The parameter $T_i>0$ controls the mean of the distribution and the parameter $\theta>1$ controls the dispersion in the distribution.  Notice that $T$ is country specific: We will allow countries to have different average levels of productivity.  In these notes $\theta$ is identical across countries because it allows for easy aggregation, but this is not necessary if you are willing to use a computer to solve the model.\footnote{This is a one sector model.  See \citet{caliendoParro} for a multisector model with sector-specific $\theta$.}
+
+The productivity draws are i.i.d. across goods and countries. Again, we can relax this assumption, but, again, we would then need a computer to solve the model.
+
+The functional form assumption is not completely ad hoc.  The Frechet distribution is one of the limiting distributions that results from sequentially drawing numbers and keeping the best draws.  This can be thought of as innovation: Try some things (take a draw) and keep it if it is better than what you already have.
+
+The parameter $\theta$ is an important part of this model. By controlling the amount of dispersion in productivity levels, it controls the potential gains from trade: In Ricardian models, countries trade to take advantage of differences in the cost of producing a particular good across countries.  If countries are very similar (low dispersion) there won't be many opportunities to trade.
+\subsection*{Preferences}
+The representative agent in country $n$ in endowed with $\bar{\ell_n}$ units of labor, and has preferences over consumption,
+\begin{equation}\label{eq:pref}
+    U_n=\left[ \int_0^1  \! \! c_n(k) ^{\frac{\sigma-1}{\sigma}} \, dk\right]^{\frac{\sigma}{\sigma-1}}.
+\end{equation}
+Taking as given the entire set of prices offered by each country for each good, agents in country $n$ choose $c_n(k)$ to maximize utility subject to the budget constraint,
+\begin{equation}
+    \int_0^1 p_n(k)c_n(k) \leq w_n\bar{\ell_n}.
+\end{equation}
+\subsection*{Market clearing}
+Market clearing is the same as in the two country world: each good market ($k$) clears, the labor market in each country clears, and trade balances for each country.  Note that trade does not balance bilaterally, each balances in the aggregate for each country.
+\subsection*{Intuition}
+At this point, it is worth thinking through how this model works before embarking on the calculus that follows.  Suppose we discretize the model (this is what we will be doing on the computer, anyways).  Let there be 1,000,000 goods in the economy. Each country draws 1,000,000 productivities from their distribution, one for each good. Each country's distribution is characterized by $\theta$ and $T_i$.  With the productivity in each country and each good pinned down, we can compute the price any country would charge another for any good $k$, and from there, we can compute which country will sell to which country. (It's the one with the lowest price.) From there, we just need to find the relative wages that clear markets.
+
+When we use the Frechet distribution for the productivity distribution, we  can compute closed-form solutions for the trade flow between any two countries.  This is the value added of this distributional assumption.  With the closed-form solutions, we can gain intuition about how the model works.
+\subsection*{Analysis}
+From here onward, we are going to make a change in notation that is common in these kinds of models. Instead of keeping track of goods by their names ($k$) we are going to keep track of goods according to the value of the productivity draw ($z=z(k)$) the good receives.  We do this because it is the productivity value that matters for the firm, not the actual name of the good.  \\
+
+\framebox[\textwidth][l]{
+    \parbox{0.1\textwidth}{
+    \includegraphics[width=1.1cm]{figures/danger.png}
+    }
+    \parbox{0.85\textwidth}{
+        Significant departure from the previous notation.  To be consistent with \citet{EK02}, I will use $x_{ni}$ to be the value of $x$ from $i$ to $n$, the opposite ordering of the indices in the other notes.
+    }
+}\\
+
+The problem for the firm producing a good with productivity $z$ in $i$ for sale in $n$ is
+\begin{align}
+  \max_{\ell_i(z)} \;\; & p_{ni}(z) y(z) - w_i\ell_i(z)\\
+  \text{s.t.} \quad & y(z) (1+\tau_{ni}) = z\ell_i(z)
+\end{align}
+which yields the pricing condition,
+\begin{equation}\label{eq:ekFrimPrice}
+    p_{ni}(z) = \frac{w_i}{z}\left(1+\tau_{ni} \right).
+\end{equation}
+
+As in the two-country model, the consumer will choose to purchase goods from the lowest priced seller.  The multicountry version of \eqref{eq:dfsMin} is
+\begin{align}
+    p_n(z) &= \min\left\{ p_{n1}, p_{n2}, \ldots, p_{nN} \right \}\\
+    p_n(z) &= \min\left\{ \frac{w_1\left(1+\tau_{n1} \right)}{z}, \frac{w_2\left(1+\tau_{n2} \right)}{z}, \ldots, \frac{w_N\left(1+\tau_{nN} \right)}{z} \right \}\\
+    p_n(z) &= \max\left\{ \frac{z}{w_1\left(1+\tau_{n1} \right)}, \frac{z}{w_2\left(1+\tau_{n2} \right)}, \ldots, \frac{z}{w_N\left(1+\tau_{nN} \right)} \right \}
+\end{align}
+
+What do we want to know?  We want to know how much country $n$ buys from country $i$.
+\begin{enumerate}
+  \item What prices does $i$ offer to $n$, $G_{ni}(p)$?
+  \item $[$What are the best prices offered to $n$, $G_n(p)$?$]$
+  \item Given all of the $G_{nj}$, what is the probability that $i$ is the lowest cost supplier, $\pi_{ni}$?
+  \item By the l.l.n., $\pi_{ni}$ is also the share of the commodity space that $i$ sells to $n$. At this point we know that $n$ buys a share of the goods from $i$, but we don't know the value of this trade yet.
+  \item Show that the price distribution of the goods $i$ sells to $n$ is identical to the price distribution of goods sold to $n$ by every other country, $G_n$. This result implies that, $\pi_{ni}$ is also the share of total spending by $n$ on goods from $i$.  This is what we wanted to know!
+\end{enumerate}
+
+Okay, let's get started. The distribution of prices that country $i$ offers country $n$ is
+\begin{align}
+    G_{ni}(p)&=\mathrm{prob}\left(\frac{w_i\left(1+\tau_{ni} \right)}{z}<p\right)\\
+    G_{ni}(p)&=\mathrm{prob}\left(\frac{w_i\left(1+\tau_{ni} \right)}{p}<z\right)\\
+    G_{ni}(p)&=1-\exp\left(-T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta} p^{\theta}\right) \label{eq:ekPricedist}.
+\end{align}
+Since the productivity draws are i.i.d. across goods and countries, the distribution of prices over the goods that the country $n$ agent will actually buy is
+\begin{align}
+    G_{n}(p)&=\mathrm{prob}\left(p_{n} < p \right) = 1-\Pi_{n=1}^N\left(1-G_{ni}(p) \right)
+\end{align}
+Huh?  Let's break this down into pieces.
+\begin{itemize}
+\item $G_{ni}\left(p \right)$ is the probability that $i$ sells the good for less than $p$, so
+\item $1-G_{ni}\left(p \right)$ is the probability that $i$ sells to $n$ at greater than $p$.
+\item The i.i.d. draws mean that $\Pi_{i=1}^N\left(1-G_{ni}(p) \right)$ is the probability that every country sells to $n$ at price greater than $p$, so
+ \item $1-\Pi_{n=1}^N\left(1-G_{ni}(p) \right)$ is the probability that at least one country sells the good to $n$ for less than $p$.
+\end{itemize}
+Now use the \eqref{eq:ekPricedist} to yield
+\begin{align}
+    G_{n}(p)&= 1-\Pi_{n=1}^N\left(1-1+\exp\left(-T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta} p^{\theta}\right) \right)\\
+    G_{n}(p)&= 1-\exp\left(\sum_{i=1}^N-T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta} p^{\theta}\right)\\
+    G_{n}(p)&= 1-\exp\left(-\Phi_n p^{\theta}\right),
+\end{align}
+which is also a Frechet distribution, where
+\begin{equation}\label{eq:Phi}
+    \Phi_n=\sum_{i=1}^NT_i \left( w_i\left(1+\tau_{ni}\right) \right)^{-\theta} \geq T_nw_n^{-\theta}
+\end{equation}
+The $\Phi$ term summarizes the forces that shape trading opportunities in the economy. Country $n$ is able to trade with countries that vary in their their levels of productivity ($T_i$), their factor costs $(w_i)$, and their trading costs ($\tau_{ni}$). This term should remind you of the multilateral resistance terms that we encountered in \citet{andersonVanwin}.
+\begin{itemize}
+\item If trade costs are infinite with everyone but your own country $\Phi_n=T_nw_n^{-\theta}$ and your price distribution is just $G_{nn}(p)$, which is determined by only country $n$'s technology.  This is autarky. Trading with at least one partner gives us $\Phi_n>T_nw_n^{-\theta}$ so trading gives you access to a better distribution of prices. It's as if country $n$ has better technology once it has trading partners.
+
+\item If trade costs are zero, then $\Phi$ is the same everywhere, and every country will buy each good from the same producing country. This is complete specialization, just as in the two-country model without trade costs.
+
+\item The greater is $\theta$, the more sensitive is the price distribution to trade costs.  Notice that, in this way, $\theta$ plays a role similar to the elasticity of substitution in the Armington model.
+\end{itemize}
+
+Let's prove some important properties of the price distribution.
+\subsection*{The probability that a country is the lowest cost supplier}
+Let $\pi_{ni}$ be the probability that country $i$ is the lowest cost supplier of good $k$ to country $n$,
+\begin{equation}
+    \pi_{ni}=\mathrm{prob}\left(p_{ni}\left(k \right) \leq \min\{ p_{ns}\left(k \right); s \neq i\} \right) = \int_0^\infty \Pi_{s \neq i}^N \left[ 1-G_{ns}(p) \right] \, dG_{ni}(p)
+\end{equation}
+where
+\begin{itemize}
+  \item $dG_{ni}(p)$ is the probability that $i$ offers price $p$
+  \item $1-G_{ns}(p) $ is the probability that $s$ offers a price greater than $p$
+  \item $\Pi_{s \neq i}^N \left[ 1-G_{ns}(p) \right]$ is the probability that every other country offers a price greater than $p$.
+  \item Integrate this over all possible prices, $p \in (0,\infty)$
+\end{itemize}
+With
+\begin{itemize}
+\item $dG_{ni}\left(p \right) = \theta T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta}p^{\theta-1} \exp\left(-T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta}p^\theta \right)$
+\item $\Pi_{s \neq i}^N \left[ 1-G_{ns}(p) \right] = \exp\left(\sum_{s \neq i}-T_s  \left(w_s\left(1+\tau_{ns} \right) \right)^{-\theta}p^\theta \right)$
+\end{itemize}
+This makes the integral, (then multiply by $\Phi_n/\Phi_n$ )
+\begin{align}
+  \pi_{ni} &= T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta}\theta \int_0^\infty \exp\left\{\Phi_n p^\theta \right\} p^{\theta-1}\,dp \\
+  \pi_{ni} &= T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta} \frac{1}{\Phi_n}  \int_0^\infty \theta \Phi_n \exp\left\{\Phi_n p^\theta \right\} p^{\theta-1}\,dp
+\end{align}
+The term inside the integral is the pdf of a Frechet distribution.  It's integral is equal to 1, so
+\begin{align}\label{eq:pini}
+  \pi_{ni} &= \frac{T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta} }{\Phi_n}.
+\end{align}
+
+By the law of large numbers, this probability is also the fraction of goods that country $i$ actually sells to $n$.  Here we see more multilateral resistance stuff: The $i$ to $n$ bilateral trade depends on $i$'s average productivity, factor costs, and bilateral trade costs \textbf{relative to these factors in every other country}.
+
+\subsection*{The price distribution of imports}
+At this point, we know what share of goods country $i$ sells to country $n$, $\pi_{ni}$.  We do not know, yet, the value ($p\times q$) of that trade. [We would know if preferences were Cobb-Douglas.]  To do so, we need to know: What does the price distribution look like, conditional on the goods being bought are from $i$?
+\begin{align}
+  \mathrm{prob}\left(p_n < p \, \vert \, p_n=p_{ni}\right) &= \frac{1}{\pi_{ni}}\int_0^p \Pi_{s \neq i}\left[ 1-G_{ns}(q)\right] dG_{ni}(q)\\
+  &=\frac{\Phi_n}{T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta} }\frac{T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta} }{\Phi_n}\int_0^p \theta \Phi_n \exp\left\{\Phi_n q^\theta \right\} q^{\theta-1}\,dq\\
+  & =  1-\exp\left(-\Phi_n p^{\theta}\right)
+\end{align}
+The last expression is $G_n(p)$: The price distribution of the goods that country $n$ actually buys from $i$ is identical to the price distribution of the goods it buys from every other country. This implies that the average price of the goods shipped from $i$ to $n$ is the same as the average price of the goods shipped from $j$ to $n$.  This means that $\pi_{ni}$ is not only the share of the goods that $i$ ships to $n$, but that it is also the share of country $n$'s expenditure that is spent on goods from $i$.
+
+Note that since average prices are equal across importers, better importers --- those with higher technology levels, lower factor prices or lower bilateral trade barriers --- sell more goods to country $n$, and not more expensive goods, which we see from \eqref{eq:pini}.
+
+\subsection*{Gravity}
+Since the price distributions of the goods actually purchased by $n$ are identical, the average price of the goods purchased are identical, so the share of spending by $n$ on goods from $i$ is just equal to the share of goods purchased from $i$, $\pi_{ni}$. Let $X_{ni}$ be spending ($p \times q$) by $n$ on goods from $i$
+\begin{equation} \label{eq:shares}
+    \frac{X_{ni}}{X_n}=\pi_{ni}= \frac{T_i \left(w_i\left(1+\tau_{ni} \right) \right)^{-\theta} }{\Phi_n}
+\end{equation}
+
+Total sales by country $i$ is
+\begin{equation}
+    Q_i = \sum_{m=1}^N X_{mi} = \sum_{m=1}^N \pi_{mi}X_{m}  = T_i w_i^{-\theta} \sum_{m=1}^N \frac{(1+\tau_{mi})^{-\theta}}{\Phi_m}X_m
+\end{equation}
+solve for $T_iw_i^{-\theta}$ and substitute it into the previous equation
+\begin{equation}
+    X_{ni}= \frac{\left(1+\tau_{ni}\right)^{-\theta} }{\Phi_n}\frac{1}{\sum_{m=1}^N\left[(1+\tau_{mi})^{-\theta}\Phi_m^{-1}X_m\right]} X_nQ_i
+\end{equation}
+use $P_n=\gamma\Phi_n^{-1/\theta}$ to substitute out the $\Phi$ terms\footnote{This is result (c) on page 1748.  The $\gamma$ term is a constant that involves $\theta$ and $\sigma$.  This is the only place that $\sigma$ shows up: We can ignore $\sigma$ in the Frechet case.}
+\begin{equation}
+    X_{ni}= \frac{ \left(\frac{1+\tau_{ni} }{P_n}\right)^{-\theta}} { \sum_{m=1}^NX_m\left(\frac{1+\tau_{mi}}{P_m}\right)^{-\theta}} X_nQ_i
+\end{equation}
+and we have a gravity equation.  Some interesting things:
+\begin{itemize}
+  \item The country incomes enter with unit elasticities, as in \citet{andersonVanwin}
+  \item The price level in $n$ deters trade from $i$.  The lower is the price level in $n$, the stiffer is competition, making it less likely $i$ is a lowest cost supplier.
+  \item $\theta$ plays the role that $\sigma$ did in the Armington model.  A larger $\theta$ implies more heterogeneity. Remember that each country that sells to $n$ does so with the same distribution of prices, so there is little room for the elasticity of substitution to come into play. A country pair with a high trade volume is a country pair that trades a lot of goods on the extensive margin. $\theta$ determines how the extensive margin works.
+\end{itemize}
+
+\subsection*{A first look at the gains from trade}
+Welfare in a country is summarized by the real wage,
+\begin{equation}
+  \frac{w_i}{P_i}=\frac{w_i}{\gamma \Phi_i^{-1/\theta}}.
+\end{equation}
+The definition of $\pi$ give us
+\begin{align}
+  \pi_{ii}&=\frac{T_i(w_i)^{-\theta}}{\Phi_i}\\
+  \Phi_i^{-1/\theta}&=T_i^{-1/\theta}w_i\pi_{ii}^{1/\theta}
+\end{align}
+substitute to get
+\begin{equation}
+  \frac{w_i}{P_i}=\gamma^{-1} \pi_{ii}^{-1/\theta} T_i^{1/\theta}.
+\end{equation}
+The gains from trade depend on parameters and how much a country purchases from itself.  In autarky, $\pi_{ii}=1$, so the gain from moving from autarky to trade is $(w_i/p_i)/(w_i^A/p_i^A) = \pi_{ii}^{-1/\theta}$, where variables with superscript $A$ are those in the autarky equilibrium.  Example: if $\theta =4$ and $\pi_{ii}=0.9$ then the gain from moving from autarky to a world where country $i$ imports one-tenth of its total expenditure is 1.027, or 2.7 percent.
+
+\subsection*{Parameterization}
+In \citet{EK02}, production involves labor and intermediate goods, and there are nontraded goods.  These features add parameters $\beta$, the share of labor in production, and $\alpha$, the share of traded goods in total output.  We are abstracting from these here, but they are important for welfare analysis.  Liberalizing trade, for example, only has a direct impact on the traded good sector, which is relatively small compared to the nontraded sector.
+
+We need: $\theta$, $T_i$, $d_{ni}$. \\
+Data: bilateral trade flows, $X_{ni}$ and wages, $w_i$
+\begin{description}
+  \item[Estimating $\theta$] The procedure used in the paper is problematic.  See \citet{simonovskaWaugh} for a discussion and estimation.  They find that $\theta=4$. That's become the ``standard" value, but keep in mind that parameters are specific to a model.
+  \item[Estimating geography and technology] Using \eqref{eq:shares} for both $n$ to $i$ trade and $n$ to $n$ trade, we have
+      \begin{equation}
+        \frac{X_{ni}}{X_{nn}}=\frac{\pi_{ni}}{\pi_{nn}}=\frac{T_i}{T_n}\left(\frac{w_i}{w_n}(1+\tau_{ni})\right)^{-\theta}.
+      \end{equation}
+      Take logs
+      \begin{equation}
+        \log\frac{X_{ni}}{X_{nn}}=-\theta\log(1+\tau_{ni})+\log\frac{T_i}{T_n} -\theta\log\left(\frac{w_i}{w_n}\right).
+      \end{equation}
+      Let $S_i=\log T_i-\theta \log w_i$, which is a ``competitiveness" measure: the technology parameter adjusted for the wage level. Now we have
+      \begin{equation}
+        \log\frac{X_{ni}}{X_{nn}}=-\theta\log(1+\tau_{ni})+S_i-S_n,
+      \end{equation}
+      which we can estimate, with country fixed effects. How do we deal with geography?  Parameterize the trade costs as
+      \begin{equation}
+        \log(1+\tau_{ni})=d_k+b+\ell+e_h+m_n+\delta_{ni},
+      \end{equation}
+      where $d_k$ are dummy variables associated with distance ``bins", $b$ is a border dummy, $\ell$ is a language dummy, $e_h$ is an RTA dummy, $m_n$ is a destination effect.  Now we estimate
+      \begin{equation}
+        \log\frac{X_{ni}}{X_{nn}}=-\theta\{d_k+b+\ell+e_h+m_n+\delta_{ni}\}+S_i-S_n,
+      \end{equation}
+      Note that we are estimating $\theta$ times the structural parameters.  We will use the value of $\theta$ to back out the underlying parameters.
+
+      Estimates are in table III: Distance matters; borders not much; Japan and USA are most competitive, Belgium and Greece the least.
+
+      Table VI has the backed out parameters.  This table allows us to get a sense of technology versus factor costs.  For example, Japan's $S$ is larger than the USA's, but that reflects low wages in Japan: $T_{US} > T_{JPN}$.
+\end{description}
+
+\subsection*{Counterfactuals}
+With the estimated parameters, we can now use the model to perform counterfactual experiments.  \citet{EK02} consider two kinds of labor markets: an immobile one, where labor cannot move across the traded and nontraded sectors, and a mobile one, where labor can be reallocated. A change in welfare in the model boils down to the change in the real wage (country size is constant), $w_i/p_i$.
+
+\begin{enumerate}
+  \item Autarky.  Let $\tau_{ni}=\infty$ for all $n\neq i$. Table IX.  Modest decreases in welfare everywhere.  Belgium: not very competitive, but close to lots of competitive countries.  They lose a lot.
+  \item Weightless trade.  Let $\tau_{ni}=0$ for all $n,i$. Table X.  Much larger welfare gains.  The real world is much closer to autarky than to free trade. Notice how small countries that are far away (New Zealand, Norway, Portugal) increase their traded sector employment.  These were countries whose technology was pretty good, but faced high geographic barriers.
+  \item A more realistic exercise might by to decrease tariffs to the point that world trade has doubled: a 69 percent decrease. Table X. Gains are similar to those in the autarky case.
+  \item Increase technology in a country and look for welfare implications. Table XI.  Spillovers are largest in countries that are close: Canada gains the most from increase in USA technology.  Austria, Belgium, and Denmark from an increase in German technology.
+\end{enumerate}
+
+\subsection*{Computation}
+Let $N$ be the number of countries, with $T_i$, $\theta$, $\sigma$, and $\tau_{ni}$ given as parameters.  Discretize the interval of goods: Let $K$ be a large number, say 100,000.
+
+
+\begin{enumerate}
+    \item Initialize the program.  For each $i=1,\ldots,N$ draw $k=1,\ldots,K$ productivities from country $i$'s distribution.
+    \item Guess a vector of $N-1$ wages. (Normalize $w_1=1$.)
+    \item For each importing country $n$
+    \begin{enumerate}
+      \item For each good $k$ compute the price from each potential exporter, $p_{ni}=w_i/z_i(k)\tau_{ni}$.
+      \item Find the minimum delivered price for each good, and note the supplier. The result will be a $K$-vector of prices and a $K$-vector of the associated supplying countries.
+      \item Construct a $K$-vector of spending on each good, $p_n(k)c_n(k)$.
+    \end{enumerate}
+  \item Aggregate the goods-level trade flows to country aggregates.  You should have an $N\times N$ matrix of trade flows.
+  \item Check: Does trade balance? If it does, you have found an equilibrium. If not, return to step 2.  (You only need to check $N-1$ balanced trade conditions.  You get one for free from Walras Law.) Notice that this is a system of $N-1$ equations in $N-1$ unknowns, the wages.
+  \end{enumerate}
+If we let the $T$ and the $\tau$ all be equal, then we have a perfectly symmetric model.  Let the wage be 1 in every country, and trade should balance without having to adjust the wages.  If it does not, you may have a bug in the program or you may need to increase $J$.
+\newpage
+\setstretch{1.0}
+\setlength{\parskip}{0.0cm}
+\printbibliography
+\end{document}
