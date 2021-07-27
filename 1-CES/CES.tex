@@ -1,0 +1,162 @@
+\documentclass[11pt, pdftex]{article}
+\usepackage{setspace,palatino,multirow}
+\usepackage{amsmath,amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{pdflscape}
+\usepackage{layout}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\usepackage{fancyhdr}
+    \setlength{\headheight}{16pt}
+    \pagestyle{fancy}
+    \rhead[]{Kim J. Ruhl}
+    \lhead[]{CES Aggregation}
+    \cfoot[]{\textit{Subject to change.  This version \today.}}
+
+\usepackage[pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue, bookmarks=true, pdfstartview={FitV}]{hyperref}
+
+
+%lanuage=american gets the punctuation within the quotes, natbib=true means use \citet as "\citeasnoun"
+\usepackage[backend=bibtex, natbib=true, sorting=nyt, style=authoryear, bibstyle=authoryear, isbn=false, language=american]{biblatex}
+    \addbibresource{D:\\Dropbox\\Tools\\bib_master.bib}
+    \renewbibmacro{in:}{}           %Kill the default "in:"
+    \setlength\bibitemsep{0.25cm}
+
+%Kill the dot between volume and number, then add paren around the number.
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+%titlesec definitions
+\titlespacing*\section{0pt}{0pt}{0pt}
+\titlespacing*\subsection{0pt}{0pt}{0pt}
+
+
+\setstretch{1.1}
+\raggedbottom
+
+\setitemize{itemsep=0.5ex}
+
+\setlength{\parskip}{0.2cm}
+\setlength{\voffset}{0.0cm}
+\setlength{\headsep}{5mm}           %space after header, before content
+\setlength{\parindent}{0cm}         %no indents
+\setlength{\textheight}{9.25in}
+
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\std}{\mathrm{std}}
+\newcommand{\cor}{\mathrm{cor}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\ph}{\phantom}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\sig}{\sigma}
+\newcommand{\lam}{\lambda}
+
+
+\begin{document}
+
+\bigskip
+\centerline{\large \bf Constant Elasticity of Substitution Demand}
+\centerline{Revised: \today}
+
+
+\bigskip
+\onehalfspacing
+Constant elasticity of substitution preferences will show up often in international trade; they are a simple way to aggregate over many goods. Consider the case with a continuum of goods.
+\begin{align}
+\max \; U(\mathbf{c})&=\left(\int_0^1b(i)c(i)^\rho di \right)^{1/\rho} \label{ces} \\
+\text{s.t.}\;\;&\int_0^1p(i)c(i) di =I \notag
+\end{align}
+
+The first order conditions are
+\begin{align}
+\label{foc}
+\left(\int_0^1b(i)c(i)^\rho di \right)^{1/\rho-1}b(\imath ')c(\imath ')^{\rho-1}=\lam p(\imath ') \hspace{1cm} \imath ' \in[0,1]
+\end{align}
+
+multiply each FOC by $c(\imath ')$ and integrate over them all
+\begin{align}
+\left(\int_0^1b(i)c(i)^\rho di \right)^{1/\rho-1}b(\imath ')c(\imath ')^{\rho}&=\lam p(\imath ')c(\imath ') \notag \\
+\left(\int_0^1b(i)c(i)^\rho di \right)^{1/\rho-1} \int_0^1b(\imath ')c(\imath ')^{\rho}d\imath '&=\lam\int_0^1 p(\imath ')c(\imath ')d\imath '\notag \\
+\left(\int_0^1b(i)c(i)^\rho di \right)^{1/\rho}&=\lam\int_0^1 p(\imath ')c(\imath ')d\imath ' \label{foc2}
+\end{align}
+
+It is typical to define a unit of utility as
+\begin{equation}
+C=\left(\int_0^1b(i)c(i)^\rho di \right)^{1/\rho}.
+\end{equation}
+Using this definition, and the budget constraint, we can write (\ref{foc2}) as
+\begin{equation}
+C \lambda^{-1}=I,
+\end{equation}
+
+where $\lam^{-1}=P$ has the natural interpretation as being the price of one unit of utility.  To solve for $P$, return to (\ref{foc}) and solve for $c(\imath ')^\rho$ and multiply by $b$
+
+\begin{align}
+c(\imath ')^\rho=\lam^{\rho/(\rho-1)} b(\imath ')^{-\rho/(\rho-1)} p(\imath ')^{\rho/(\rho-1)} \int_0^1b(i)c(i)^\rho di \\
+b(\imath ')c(\imath ')^\rho=\lam^{\rho/(\rho-1)} b(\imath ')^{-1/(\rho-1)} p(\imath ')^{\rho/(\rho-1)} \int_0^1b(i)c(i)^\rho di
+\end{align}
+ Now integrate all of the FOCs again:
+\begin{align}
+\int_0^1b(\imath ')c(\imath ')^\rho d\imath '=\lam^{\rho/(\rho-1)} \int_0^1b(\imath ')^{-1/(\rho-1)} p(\imath ')^{\rho/(\rho-1)}d\imath ' \int_0^1b(i)c(i)^\rho di
+\end{align}
+ to get
+\begin{align}
+P=\lam^{-1}= \left(\int_0^1b(\imath ')^{\frac{-1}{\rho-1}} p(\imath ')^{\frac{\rho}{\rho-1}}d\imath '\right)^{\frac{\rho-1}{\rho}} \label{price_index}
+\end{align}
+
+\subsection*{Properties}
+\textbf{Elasticity of Substitution}\\
+From (\ref{foc}) we have
+\begin{equation}
+\frac{c(j)}{c(i)}=\left(\frac{b(j)}{b(i)}\right)^{-\frac{1}{1-\rho}} \left(\frac{p(j)}{p(i)}\right)^{-\frac{1}{1-\rho}}
+\end{equation}
+Taking the log of this equation and differentiating with respect to $p(j)/p(i)$ shows that the elasticity of substitution between goods is $\sig=1/(1-\rho)$.
+
+\textbf{Demand Function and Own Price Elasticity}\\
+If we substitute $P$ into(\ref{foc}) we have the demand function
+\begin{align}
+c(i)=b(i)^{\frac{1}{1-\rho}}\left(\frac{p(i)}{P}\right)^{\frac{-1}{1-\rho}} C,
+\end{align}
+where $\sig=1/(1-\rho)$ is the own price elasticity of good $i$.  Note that this is only the case when good $i$ is so small it has a negligible impact on $P$.  This is true when there are a continuum of goods, and is also typically assumed even when the number of goods is finite.  A typical assumption is that ``the number of goods is large enough that no single good can influence the aggregate price level."
+
+The demand function can be written in expenditure form, as well
+\begin{align}
+p(i)c(i)=b(i)^{\frac{1}{1-\rho}}\left(\frac{p(i)}{P}\right)^{\frac{-\rho}{1-\rho}} PC.
+\end{align}
+
+\textbf{Limiting Cases}\\
+As $\rho  \to 0$ this is Cobb-Douglas.  As $\rho \to 1$ perfect substitutes, as $\rho  \to \infty $ Leontief.
+
+\textbf{Two Stage Budgeting}\\
+While some authors will model preferences exactly as (\ref{ces}), it is common to nest a CES group of products into an economy with other goods and specify the consumer's problem as
+\begin{align}
+&\max \; U \left(c_0,\left(\int_0^1b(i)c(i)^\rho di \right)^{1/\rho}\right)\\
+\text{s.t.}\;\;&p_0c_0+\int_0^1p(i)c(i) di =I \notag
+\end{align}
+Using the derivations above, we can rewrite this as a ``two stage budgeting problem," where the first stage is
+\begin{align}
+&\max \; U(c_0,C)\\
+\text{s.t.}\;\;&p_0c_0+PC =I \notag
+\end{align}
+which determines the expenditure on the nummeraire good and the differentiated goods.  Once we know $PC$ we can solve the problem specified in (\ref{ces}) replacing $I$ with $PC$.
+
+\textbf{CES Production}\\
+You will also find papers in which the $i$-goods are considered to be \textit{intermediate goods} and the CES aggregator is meant to be a production function (e.g. Ethier 1982).  For example, a model might have a feasibility constraint like
+\begin{equation}
+C_t+I_t \leq \left(\int_0^1b(i)y(i)^\rho di \right)^{1/\rho}=Y_t,
+\end{equation}
+where $C$ is consumption of the final good and $I$ is the amount of final good used for investment.  In a model like this, you might be tempted to think that $P$ is the GDP price deflator.  It is not.  The GDP deflators in the United States and Canada are chain-weighted Fisher indices.  Other countries follow different procedures (some use chained Laspeyres indices) but, in any case, none of the countries use a price index that looks like (\ref{price_index}).
+\end{document}
