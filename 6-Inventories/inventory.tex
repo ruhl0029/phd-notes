@@ -1,0 +1,306 @@
+\documentclass[11pt, pdftex]{article}
+\usepackage{setspace,palatino,multirow}
+\usepackage{amsmath,amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{pdflscape}
+\usepackage{layout}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+    \pgfplotsset{compat=1.10}
+
+
+
+\usepackage{fancyhdr}
+    \setlength{\headheight}{16pt}
+    \pagestyle{fancy}
+    \rhead[]{Kim J. Ruhl}
+    \lhead[]{Firms that trade}
+    \cfoot[]{\textit{Subject to change.  This version \today.}}
+    \rfoot[]{ $|$ \thepage}
+
+\usepackage[pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue, bookmarks=true, pdfstartview={FitV}]{hyperref}
+
+
+%lanuage=american gets the punctuation within the quotes, natbib=true means use \citet as "\citeasnoun"
+\usepackage[backend=bibtex, natbib=true, sorting=nyt, style=authoryear, bibstyle=authoryear, isbn=false, language=american]{biblatex}
+    \addbibresource{D:\\Dropbox\\Biblio\\bib_master.bib}
+    \renewbibmacro{in:}{}           %Kill the default "in:"
+    \setlength\bibitemsep{0.25cm}
+
+%Kill the dot between volume and number, then add paren around the number.
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+%No header
+\DefineBibliographyStrings{english}{%
+  references = {------------------},
+}
+
+%titlesec definitions
+\titlespacing*\section{0pt}{0pt}{0pt}
+\titlespacing*\subsection{0pt}{0pt}{0pt}
+
+
+\setstretch{1.1}
+\raggedbottom
+
+\setitemize{itemsep=0.5ex}
+\setenumerate{itemsep=0.5ex}
+
+\setlength{\parskip}{0.2cm}
+\setlength{\voffset}{0.0cm}
+\setlength{\headsep}{5mm}           %space after header, before content
+\setlength{\parindent}{0cm}         %no indents
+\setlength{\textheight}{9.25in}
+
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\std}{\mathrm{std}}
+\newcommand{\cor}{\mathrm{cor}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\ph}{\phantom}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\sig}{\sigma}
+\newcommand{\lam}{\lambda}
+
+
+\begin{document}
+\ph{whatever}
+\medskip
+
+\centerline{\Large \bf Inventories and international trade}
+\medskip
+[\textit{My notes are in beta.  If you see something that doesn't look right, I would greatly appreciate a heads-up.}]
+
+We have seen that firm growth in the foreign markets (and aggregate growth) is slow-moving. It takes time to ramp-up trade. In contrast, during big devaluations (and recessions), import volumes crash and the extensive margin accounts for much of this. In devaluations, firms just stop importing. Import prices devalue fast, but retail prices are much slower.
+
+
+Big question: Can a model with import lags and fixed costs of importing (which will generate inventory holding) account for the implosion of imports following a devaluation?
+
+These notes follow ``Inventories, lumpy trade, and large devaluations'' by Alessandria, Kaboski, and Midrigan. (\cite{alessandriaInvetories})
+
+\section{Data}
+The paper lays out evidence for three facts that they claim standard models cannot match or do not take into account.
+\begin{enumerate}
+\item International trade frictions are more complex than icebergs and fixed costs.
+\begin{enumerate}
+  \item \textbf{International trade suffers delivery lags.} Hummels (1999) finds 2--6 week lags by ship versus 1 day in the air. About 70 percent of trade with developing countries is by sea. World Bank \textit{Doing Business} surveys find customs  processes adds 2--5 weeks.
+      \item \textbf{There is a fixed component to transaction costs.} Fixed shipping costs are about 10 percent of median shipment value (2 percent of average shipment value).
+\end{enumerate}
+
+\item Firms hold inventories, and imported or exported goods are held in larger quantities.
+\begin{enumerate}
+  \item \textbf{Importers tend to hold larger inventories.} Run a regression of inventory/materials ratio of firm $j$ on imports as a share of material purchases and exports as a share of shipments.
+  \begin{equation}\label{}
+    i_{jt} = c+\alpha_ms^m_{jt}+\alpha_xs^x_{jt}+e_{jt}
+  \end{equation}
+  Control for a bunch of stuff. Find $\alpha_m$ to be around 0.15 and significant. Implication is that non-importers will hold about 2.5 months worth of inventories and a firm that only imports materials and exports its production would hold 7.5 months of inventories. Holds in data from Chile, the United States, India, Peru, Colombia,\ldots
+\end{enumerate}
+
+\item International trade is ``lumpy.''
+\begin{enumerate}
+  \item  \textbf{International transactions are bigger than domestic transactions.} \citet{hall2003steel} study micro-data from a steel broker: import transactions are 50 percent larger than domestic.
+  \item \textbf{International transactions are infrequent.} Mean time between orders: 205 days for imports versus 100 days for domestic (\cite{hall2003steel}). U.S. export shipments to Argentina (or Russia) are observed about every other month. About 80 percent of a year's trade is accounted for by the top three months by trade volume. These numbers are much smaller for trade to Mexico---a country much closer to the United States.
+\end{enumerate}
+
+\end{enumerate}
+
+\section{The toy model}
+The economic order quantity (EOQ) model is a simple inventory model that you would learn in an undergraduate operations research class. \citet{alessandriaInvetories} build a more complex version of this model.
+
+In the EOQ model, we consider a retailer who purchases a good and resells it. There is no uncertainty and no shipping lags. The goal is to minimize the total cost over some period of time, say a year,
+\begin{equation}
+  \min_Q \;TC = PD + \frac{D}{Q}f + h\frac{Q-0}{2}
+\end{equation}
+where $D$ is quantity demand for the good in the period, $P$ is the wholesale price, $Q$ is the size of an order from the wholesaler, $f$ is the shipment fixed cost, and $h$ is the cost of holding inventory. 
+\begin{itemize}
+  \item $D/Q$ is the number of orders in the year so that $\frac{D}{Q} f$ is the total fixed costs paid.
+  \item $\frac{Q-0}{2}$ is the average holding of inventories between the time a new order arrives and all the inventory is sold. $\frac{Q-0}{2}h$ is total inventory holding costs.
+\end{itemize}
+The first order condition is
+\begin{equation}\label{}
+  \frac{h}{2}=\frac{D}{Q^2}f.
+\end{equation}
+Making $Q$ larger means that you hold more inventories, which costs more (the left-hand side of the equation). Making $Q$ larger decreases the number of shipments you need to make, which lowers the ordering costs you pay (the right-hand side of  the equation). 
+The solution is
+\begin{eqnarray}
+% \nonumber % Remove numbering (before each equation)
+  Q &=& \sqrt{\frac{2Df}{h}}.
+\end{eqnarray}
+The order size is decreasing in $h$ (would want smaller inventories) and increasing in $D$ and $f$ (would like fewer orders).
+
+The number of orders is $n=D/Q$ and the order frequency is
+\begin{equation}\label{eq:freq}
+  \text{freq}=\frac{1}{n} = \sqrt{\frac{2f}{hD}}
+\end{equation}
+
+The solution is a sawtooth pattern of inventories. The firm makes an order when inventories are zero. If there was a one period lag, the solution is to order when inventory is at $D$ units. This leads to greater average inventories.
+
+I am working on a jupyter notebook for this\ldots
+
+\section{The model}
+\citet{alessandriaInvetories} build a more complicated EOQ model by adding delivery lags and uncertain demand. The model is
+\begin{enumerate}
+  \item Partial equilibrium: This is a firm decision problem
+  \item A retailer is monopolistically competitive firm that imports a good at price $\omega$, marks it up, and sells it at price $p$
+  \item There is a fixed cost $f$ to importing and a one period lag
+  \item There is a cost to holding inventories of $\delta$
+\end{enumerate}
+
+Consider a firm $j$. It faces stochastic demand
+\begin{equation}\label{eq:demand}
+  y_j(\eta^t) = e^{\nu_j(\eta^t)}p_j(\eta^t)^{-\theta}
+\end{equation}
+which is CES demand with a shifter $e^{\nu_j(\eta^t)}$. The authors use the ``eta'' notation for uncertainty. At time $t$, a event occurs, $\eta_t$. A history is a sequence of events up to and including $t$: $\eta^t=\left(\eta_0, \eta_1,\ldots,\eta_t \right)$. A history traces a path down a tree.
+
+The demand shock $\nu_j$ is i.i.d. over time and firms, which will make the model easier to solve.
+
+Let $s_j(\eta^t)$ be the beginning of period stock of inventory. The one period lag on orders says that a firm cannot sell more than its inventory
+\begin{equation}\label{eq:stock-out}
+q_j(\eta^t) = \min [e^{\nu_j(\eta^t)}p_j(\eta^t)^{-\theta}, s_j(\eta^t)]
+\end{equation}
+
+The law of motion for inventories is
+\begin{equation}\label{eq:lom}
+  s_j(\eta^{t+1}) = (1-\delta)[ s_j(\eta^t)-q_j(\eta^t)+i_j(\eta^t) ]
+\end{equation}
+where $i_j(\eta^t)$ is the order of more goods. Note that they are assuming goods depreciate in transit. This is a simplifying assumption.
+
+\subsection{Bellman equations}
+The value of adjusting is
+\begin{equation}\label{}
+  V^a(s,\nu) = \max_{p,i>0} q(p,s,\nu)p-\omega-i-f+\beta EV(s^\prime,\nu^\prime)
+\end{equation}
+
+The value of not adjusting is
+\begin{align}
+  V^n(s,\nu) &= \max_{p>0} q(p,s,\nu)p+\beta EV(s^\prime,\nu^\prime)\\
+  i&=0
+\end{align}
+subject to the law of motion \eqref{eq:lom} and the stock out rule \eqref{eq:stock-out}. The value of the firm is
+\begin{equation}\label{}
+  V(s,\nu)=\max[V^a(s,\nu),V^n(s,\nu)].
+\end{equation}
+
+\subsection{Optimal policies}
+Solving the value functions generates policy functions for pricing $p^a(s,\nu)$ and $p^n(s,\nu)$, order size $i(s,\nu)$, and the discrete choice over making an order $\phi(s,\nu)$.
+
+\begin{enumerate}
+  \item Conditional on adjusting inventories, the inventory level is determined by
+  \begin{equation}\label{eq:foc}
+    \omega = \beta (1-\delta) E V_s(s^\prime, \nu^\prime)
+  \end{equation}
+  When adjusting, you set the expected, discounted marginal value of a unit of inventory $V_s$ equal to the marginal cost $\omega$. The discount is because the inventory does not show up until tomorrow and the $\delta$ is because there is depreciation in route.
+
+  Since $\nu$ is iid, conditional on adjusting, you always choose the same inventory level. This is the straight line at 6 in Figure 2.
+
+  \item The decision to adjust is in Figure 2. The threshold slope upward: firms with high demand will sell more and need to adjust make an order for higher levels of beginning inventories.
+
+    \item Pricing is interesting. In general, pricing is a constant markup, but not over the replacement cost. Instead, it is a markup over the marginal value of a unit of inventories. This will not be constant. Given a realization of $\nu$ we have
+        \begin{equation}\label{}
+          p=\frac{\theta}{\theta-1}V_s(s,v)
+        \end{equation}
+
+        Note the $s$ subscript on the $V$ and no primes on $s$ and $\nu$. Look at Figure 3. There are three regions
+        \begin{enumerate}
+          \item When inventories are very low, the firm will be making an order, so it prices to completely stock out. The price is just an inversion of \eqref{eq:demand}: $p=(s/\nu)^{-1/\theta}$
+
+              Once inventories are high enough to avoid a stock out, the firms carries over inventories, so now the condition is
+            \begin{equation}\label{}
+          p=\frac{\theta}{\theta-1}\beta(1-\delta)EV_s(s^\prime,\nu^\prime).
+        \end{equation}
+
+
+          When the firm does not stock out, but the firm will need to adjust its inventories, then the firm prices $p=\mu \omega$. This follows from \eqref{eq:foc}. This is the flat part of the price curve.
+
+          \item The middle section of the figure is best understood from right to left. Exactly at the optimal inventory level we again have $V_s=\omega$. As the inventory falls, $V_s>\omega$ because an extra unit of inventory decreases the probability of having to order and pay the fixed cost. The closer we get to the order threshold, the more valuable a unit of inventory becomes. Once we hit the reorder threshold, the price discretely jumps to $\omega$. [The downward slope is because of depreciation.]
+
+          \item The right side of the figure is when the firm has too many inventories. This occurs when the firm had a series of low demand shocks. In this case, the firm lowers its price below $\omega$ to move units and save the depreciation.
+        \end{enumerate}
+\end{enumerate}
+
+\section{Calibration}
+We worked out the problem for a single retailer. Now assume there are a continuum of retailers who are all atomistic.
+
+\begin{itemize}
+  \item Period is one month: delivery lag of one or two months in the data
+  \item $\beta=0.94^{1/12}$ for a 6\% annual interest rate
+  \item $\delta=0.025$ Richardson (1995)
+  \item $\theta=1.5$
+\end{itemize}
+
+Demand shocks are $\nu \sim N(0,\sigma^2)$. Still need to estimate $\sigma^2$ and $f$. Do it to match two facts from the Chilean data. Want 1) HH index to be 0.44 and 2) inventory to purchases ratio to be 0.36.
+
+Find $\sigma=1.15$ and $f=0.095$. $f$ is in units of median firm per-period revenues, or 3.6 percent of average import shipment size.
+
+The standard deviation is high. The authors attribute this to capturing other kinds of uncertainty, which sounds reasonable. Kahn and Thomas (2007) also find that stockout avoidance is not enough to generate the large inventory holdings we see in the data.
+
+\subsection{The tariff equivalent}
+What iceberg cost would an importer take to remove the delay in shipment and the fixed costs of shipments?
+
+\begin{align}\label{}
+  V^f(\tau) & =\max_{p_t}\sum_{t=0}^{\infty}\left( p_t-(1+\tau)\omega  \right)e^{\nu_t}p_t^{-\theta}
+\end{align}
+
+Find the $\tau$ such that
+\begin{align}\label{}
+  V^f(\tau) & = EV(0,\eta)
+\end{align}
+and find that $\tau=0.20$. This is roughly
+\begin{equation}\label{}
+  \underbrace{0.36}_{\text{i/purchases}}\times \underbrace{0.03}_{\text{monthly carry cost}} \times 12 + \underbrace{0.036}_{\text{fixed costs?}}+\underbrace{0.03}_{\text{lag?}} = 0.196
+\end{equation}
+
+\subsection{Firms that do not import}
+
+Drop the lag to 1/2 month. Recalibrate $f$ to so that frequency of domestic-firm orders is twice that of importers. \textbf{See table 5}. The order fixed costs falls from 0.095 to 0.025: almost a factor of 4.
+
+Inventory-sales ratios falls to 0.21 (from 0.36), in the same ballpark as the 50 percent size difference reported in \citet{hall2003steel}.
+
+The tariff equivalent falls by half from 0.20 to 0.09.
+
+\section{Devaluations}
+\begin{enumerate}
+\item A devaluation is a permanent increase in $\omega$, with $\Delta \log(\omega)=0.5$
+
+\item AND a permanent increase in the interest rate, $\beta=0.7^{1/12}$, an increase of 24 percentage points.
+
+\item AND a drop in demand $\nu \sim N(-0.15, \sigma^2)$.
+
+\item AND final output is $y=\ell^{\alpha}m^{1-\alpha}$ and assume that $w$ does not change. This means that the cost of producing the final good does not fall one for one with the change in $\omega$.
+\end{enumerate}
+
+Increasing interest rates makes holding inventories even more expensive. Lowering demand lowers the target inventory rate. Lowering pass through will drive a bigger wedge between at the dock prices and retail prices.
+
+\textbf{Figure 5}. Pre-devaluation, spike in distribution at the reset point. Adjustment probability decreasing in inventories. Firms do not seem to be holding too many inventories (or maybe a few are, but they are lumped in the last bin?).
+
+After the devaluation, the distribution shifts to the left and compresses. The qualitative features look similar to the pre-devaluation figure. The increase in $\omega$ means firms will charge higher prices, sell less, and hold smaller inventory levels.
+
+All the firms holding inventories greater than about 2.5 when the devaluation hits will find themselves with too much inventory. This inventory will need to be run down in the transition, and these firms will not need to order. This generates a large extensive margin response.
+
+\textbf{Figure 6, left panel}. Focus on the `only relative price change' lines (light colored). A big chunk of the change in cost is passed through immediately. Compare to model where $r$ increases. In that case, the more expensive carry costs incentivize retailer to lower prices and shed inventories faster.
+
+\textbf{Figure 6, right panel}. Imports fall a lot as do the fraction of importers. Import volumes settle into a lower level (the shock to $\omega$ is permanent) and the fraction of importers converges to a value either slightly higher or lower than the original.
+
+In the true devaluation model, the new level is lower than the old level. Demand is permanently lower (cost and price are higher) so you order less.
+
+In the benchmark model, holding inventories has also become more expensive (the interest rate increases). This makes firms want to higher more frequently.
+
+\setstretch{1.0}
+\setlength{\parskip}{0.0cm}
+\printbibliography
+
+\end{document}
