@@ -1,0 +1,408 @@
+\documentclass[11pt, pdftex]{article}
+\usepackage{setspace,palatino,multirow}
+\usepackage{amsmath,amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{pdflscape}
+\usepackage{layout}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+    \pgfplotsset{compat=1.10}
+
+
+
+\usepackage{fancyhdr}
+    \setlength{\headheight}{16pt}
+    \pagestyle{fancy}
+    \rhead[]{Kim J. Ruhl}
+    \lhead[]{Firms that trade}
+    \cfoot[]{\textit{Subject to change.  This version \today.}}
+    \rfoot[]{ $|$ \thepage}
+
+\usepackage[pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue, bookmarks=true, pdfstartview={FitV}]{hyperref}
+
+
+%lanuage=american gets the punctuation within the quotes, natbib=true means use \citet as "\citeasnoun"
+\usepackage[backend=bibtex, natbib=true, sorting=nyt, style=authoryear, bibstyle=authoryear, isbn=false, language=american]{biblatex}
+    \addbibresource{D:\\Dropbox\\Biblio\\bib_master.bib}
+    \renewbibmacro{in:}{}           %Kill the default "in:"
+    \setlength\bibitemsep{0.25cm}
+
+%Kill the dot between volume and number, then add paren around the number.
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+%No header
+\DefineBibliographyStrings{english}{%
+  references = {------------------},
+}
+
+%titlesec definitions
+\titlespacing*\section{0pt}{0pt}{0pt}
+\titlespacing*\subsection{0pt}{0pt}{0pt}
+
+
+\setstretch{1.1}
+\raggedbottom
+
+\setitemize{itemsep=0.5ex}
+\setenumerate{itemsep=0.5ex}
+
+\setlength{\parskip}{0.2cm}
+\setlength{\voffset}{0.0cm}
+\setlength{\headsep}{5mm}           %space after header, before content
+\setlength{\parindent}{0cm}         %no indents
+\setlength{\textheight}{9.25in}
+
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\std}{\mathrm{std}}
+\newcommand{\cor}{\mathrm{cor}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\ph}{\phantom}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\sig}{\sigma}
+\newcommand{\lam}{\lambda}
+
+
+\begin{document}
+\ph{whatever}
+\medskip
+
+\centerline{\bf \Large Heterogeneous firm Models}
+\medskip
+[\textit{My notes --- especially, this one --- are in beta.  If you see something that doesn't look right, I would greatly appreciate a heads-up.}]
+
+Not many firms export.  Firms that do export are larger and more productive.  As more facts about firm-level trade outcomes become known, models have been developed to account for these facts.
+
+\section{Homogeneous firm trade models}
+Before turning to heterogenous firm models, it is useful to see how the models work with symmetric firms.  The classic reference here is \citet{krugman80}. [Todo: Write this up]
+
+\section{Heterogeneous firm trade models}
+The analysis here mostly follows \citet{chaney08}, which makes one significant departure from the \citet{melitz} framework: In the Melitz framework the mass of entrants ($M$ in Melitz's notation) is endogenous and potential firms pay a cost $f_e$ to draw from the productivity distribution.  This is essentially a static version of \citet{hopenhayn}. In Chaney's framework, the mass of potential entrants is fixed, so there are aggregate profits in equilibrium.
+
+\textbf{Endowments and preferences}\\
+There are $N$ countries, each endowed with $L_i$ units of labor and $\mu_i$ potential firms.  By potential firms, we mean that country $i$ gets $\mu_i$ draws from the productivity distribution.
+
+In each country, two types of goods are produced: a homogeneous good whose consumption in $i$  is denoted $c_{0i}$  and a continuum of differentiated goods,  indexed by  $\omega$.  The consumer inelastically supplies labor to the firms, and, as the owner of the firms, receives the firms' profits.  The consumer in country $i$  chooses consumption of the homogenous and differentiated goods to maximize
+\begin{equation}\label{eq:pref}
+    (1-\alpha)\log c_{0i} + \frac{\alpha\sigma}{\sigma-1} \log \int_0^m c_i(\omega)^{\frac{\sigma-1}{\sigma}} \, d\omega
+\end{equation}
+subject to the consumer's budget constraint
+\begin{equation}\label{eq:bc}
+    p_{0i}c_{0i}+\int_0^m p_i(\omega)c_i(\omega)\, d\omega=w_iL_i+\pi_i,
+\end{equation}
+and the usual non-negativity constraints.  The wage is denoted $w_i$  and the profit from all firms in operation in country $i$ is  $\pi_i$. (Chaney makes a different assumption about firm ownership.  We discuss this later.)  The total mass of differentiated goods consumed is  $m$.  We will later make clear the relationship between the mass of firms in operation, the mass of potential firms, and the probability distribution over potential firms.
+The solution to the consumer's problem leads to the well known CES demand functions for differentiated goods
+\begin{equation}\label{eq:demand}
+    c_i(\omega) = \alpha \left( w_iL_i+\pi_i \right) p_i(\omega)^{-\sigma}P_i^{\sigma-1},
+\end{equation}
+where the aggregate price index for differentiated goods is
+\begin{equation}\label{eq:agg_P}
+    P_i=\left(\int_0^m p_i(\omega)^{-(\sigma-1)}\,d\omega \right)^{\frac{-1}{\sigma-1}}.
+\end{equation}
+\subsection*{Firms}
+The homogenous consumption good is produced using a constant returns to scale production function that is identical across countries, $y_0=\ell_0$, and sold in competitive markets.  The homogenous good is freely traded, so we take it to be the numeraire good and set $p_{0i}=w_i=1$  for all  $i$.  This is a common trick: The homogeneous good pins down the wage, so it effectively makes the model a partial equilibrium model.  This makes solving the model  analytically much simpler, but this is not necessary (and probably not desirable) if you are willing to turn on a computer to solve the model.
+
+Differentiated good firms are monopolistic competitors.  The differentiated good firm in market $i$ producing good $\omega$ for sale in market $j$ has the production function $y_{ij}(\omega)=\varphi(\omega)\ell_{ij}(\omega)$\footnote{If we write the production function as $y_{ij}(\omega)=\varphi(\omega)^{1/(\sigma-1)}\ell_{ij}(\omega)$, the variance of the firm-size distribution will not be dependent on $\sigma$. To see this, solve for labor demand and notice that it is proportional to $\varphi$ in this case.}.  The firm producing $\omega$ has marginal productivity $\varphi(\omega) \in [\underline{\varphi},\infty).$ The fixed operating cost of selling to market $j$ is $\kappa_{ij}$, which is paid in units of labor.  This is a static model, so there is no sense in which this is a ``sunk cost" as in \citet{robertsTybout97}.  When we move to dynamic models, the concept of a sunk cost will become meaningful.
+
+Firms produce with a constant marginal cost, (gross of fixed costs) so the maximization problem of a firm can be separated across destination markets.  The firm takes as given the residual demand for its good and chooses its price to maximize profits
+\begin{align}
+  \max_{p_{ij},\ell_{ij}} \; \pi_{ij}(\omega) & = p_{ij}(\omega)c_{ij}(\omega)-w_i\ell_{ij}(\omega)-w_i\kappa_{ij}\\
+  & \text{s.t.} \; \tau_{ij}c_{ij}(\omega)=\varphi(\omega)\ell_{ij} \notag
+\end{align}
+which yields the usual constant markup over marginal pricing condition
+\begin{equation}\label{eq:price}
+    p_{ij}(\omega)=\frac{\sigma}{\sigma-1}\frac{w_i}{\varphi(\omega)}\tau_{ij}.
+\end{equation}
+The first term is the markup, which is a function of the elasticity of substitution.  When goods are closer substitutes consumers are more sensitive to prices, so markups are lower.  The second term is the firm's marginal cost and the last term is the adjustment for variable trade costs.  Notice that prices do not differ across markets except to compensate for variable trade costs. This is not a model in which firms price discriminate across markets. (Although there is evidence in the data that they do.)
+
+Notice that the price set by a firm (and in fact, any other decision made by the firm) depends not on the good's name,  $\omega$, but on its productivity  $\varphi$.  Since all firms with productivity $\varphi$  will behave identically, and varieties enter utility symmetrically, we no longer characterize a good by its label, but by its productivity. (We did this in the Ricardian models, too.)
+
+A firm's sales (which are exports when $i \neq j$) are
+\begin{equation}\label{eq:sales}
+    p_{ij}(\varphi)c_{ij}(\varphi)= \alpha\left(w_jL_j+\pi_j \right)P_j^{\sigma-1}\left(\frac{\sigma}{\sigma-1}\frac{w_i\tau_{ij}}{ \varphi} \right)^{-(\sigma-1)}
+\end{equation}
+and profits are a constant fraction of firm revenues (another special property of CES demand + monopolistic competition)
+\begin{equation}\label{eq:profit}
+    \pi_{ij}(\varphi)= \sigma^{-1}\alpha\left(w_jL_j+\Pi_j \right)P_j^{\sigma-1}\left(\frac{\sigma}{\sigma-1} \frac{w_i\tau_{ij}}{ \varphi} \right)^{-(\sigma-1)}-w_i\kappa_{ij}.
+\end{equation}
+
+We will characterize an equilibrium in which there exists, for each country pair, a firm with productivity $\hat{\varphi}_{ij}$ that is indifferent to selling in market $j$.  We will assume that the fixed costs are large enough that this cutoff productivity level is always greater than the minimum productivity level $\hat{\varphi}_{ij}>\underline{\varphi}$.   This cutoff level of productivity is defined as the level of productivity that yields a firm with productivity $\hat{\varphi}_{ij}$  zero profits from selling in  $j$, $\pi_{ij}(\hat{\varphi}_{ij})=0$,
+\begin{align}
+  \hat{\varphi}_{ij} &= \frac{\sigma}{\sigma-1}\frac{w_i\tau_{ij}}{P_j} [\sigma^{-1}\alpha Y_j]^{-\frac{1}{\sigma-1}}(w_i\kappa_{ij})^{\frac{1}{\sigma-1}},
+\end{align}
+where $Y_j=w_jL_j+\pi_j$ is total income in country $j$. Since profits are increasing in productivity, all firms with $\varphi \geq \hat{\varphi}_{ij}$ will sell into market $j$.  This is the key mechanism in the model: The fixed costs induce selection over firm productivity.  The more productive firms can earn large enough profits to cover fixed costs, so they will export to market $j$. This is one of the stylized data facts: Not all firms export.
+
+More productive firms sell more than less productive firms (see equation \ref{eq:sales}) because a firm prices on the elastic part of its demand curve. Exporters will be larger than nonexporters both in terms of total sales, domestic sales, and employment.  This is another stylized data fact: Exporters are large.
+
+If you can grok this figure, then you understand 95 percent of how this model works. The other 5 percent is general equilibrium stuff.
+
+\begin{figure}[ht]
+\caption{Cutoff productivity.}
+\label{fig:dfs}
+\centering
+\begin{tikzpicture}[xscale=7, yscale=3.5]
+  \draw[<->] (0,1.2)--(0,-0.5);
+  \node[left] at (0,1.2) {$\pi_{ij}(\varphi)$};
+  \node[left] at (0,-0.25) {$-w_i\kappa_{ij}$};
+  \draw[<->](-0.2,0)--(1.1,0)  node[below]{$\varphi$};
+  \draw[thick, domain=0:1] plot(\x, {\x^2-0.25)} ) ;
+  \draw[dashed] (0.5,-0.1) node[below]{$\hat{\varphi}$}--(0.5,0);
+\end{tikzpicture}
+\end{figure}
+
+
+\textbf{Firm heterogeneity}\\
+Let the distribution over firm types be Pareto
+\begin{equation}\label{eq:pareto}
+    G(x) = 1-\underline{x}^{\gamma}x^{-\gamma}.
+\end{equation}
+The parameter $\gamma$ governs the amount of variance in the distribution.  We need $\gamma>2$ for the variance to be finite.  We will also require that $\gamma>\sigma-1$.  Technically, we need this to get some integrals to converge, but, intuitively, this restriction says that, relative to the variance in firm productivity, we can't have too much substitution.  If goods are too substitutable, then consumers will want to push all of their spending into the  low-priced (high productivity) firms, and the model explodes.  This restriction keeps consumers demanding ``enough" of the higher priced goods.
+
+The Pareto distribution has the special property that truncating it from below creates a distribution that is still Pareto with shape parameter $\gamma$, but with a different lower bound, $\underline{x}'$.  This property will be useful, given that these kinds of models are characterized by truncations of the productivity distribution.  (This is analogous to the \citet{EK02} + Frechet assumption.)
+
+In equilibrium, the firm size distribution in this model will be something close to the underlying distribution we assume over productivity. (This is not a very deep model of the firm size distribution.)  The U.S. firm size distribution is roughly Pareto, at least in the right tail (see \cite{axtel}), although there is some disagreement about this.
+
+\textbf{Aggregates}\\
+With the model characterized by the cutoff values, we can now work out some aggregates. The aggregate price index is
+\begin{align}
+  P_j^{-(\sigma-1)}&=\sum_{k=1}^N \int_{\hat{\varphi}_{kj}} (w_k\tau_{kj})^{-(\sigma-1)} \left((\sigma-1)/\sigma \right)^{\sigma-1}\varphi^{\sigma-1} \mu_k \gamma \underline{\varphi}^\gamma \varphi^{-\gamma-1} d\varphi \label{eq:P}\\
+  %
+  P_j^{-(\sigma-1)}&=\sum_{k=1}^N  \frac{(w_k\tau_{kj})^{-(\sigma-1)} \left((\sigma-1)/\sigma \right)^{\sigma-1} \mu_k \gamma \underline{\varphi}^\gamma}{\gamma-(\sigma-1)} \hat{\varphi}_{kj}^{\sigma-1-\gamma}\\
+  %
+ P_j^{-(\sigma-1)}&=\sum_{k=1}^N  \frac{(w_k\tau_{kj})^{-(\sigma-1)} \left((\sigma-1)/\sigma \right)^{\sigma-1} \mu_k \gamma \underline{\varphi}^\gamma}{\gamma-(\sigma-1)} \left(\frac{w_k\tau_{kj}\sigma}{(\sigma-1) P_j}\right)^{(\sigma-1)-\gamma} [\sigma^{-1}\alpha Y_j]^{\gamma\frac{1-\rho}{\rho}-1}\kappa_{kj}^{1-\gamma\frac{1-\rho}{\rho}} \label{eq:price-simple}\\
+ %
+  %P_j^{-\gamma}&=  [(1-\rho)\alpha]^{\gamma\frac{1-\rho}{\rho}-1} \rho^{\gamma} \frac{ \gamma}{\gamma-\rho/(1-\rho)} Y_j^{\gamma\frac{1-\rho}{\rho}-1} \sum_{k=1}^N \underline{x}^\gamma \mu_k  (w_k\tau_{kj})^{-\gamma}  \kappa_{kj}^{1-\gamma\frac{1-\rho}{\rho}}\\
+%  %
+%  P_j&=  [(1-\rho)\alpha]^{1/\gamma-\frac{1-\rho}{\rho}} \rho^{-1} \left( \frac{ \gamma}{\gamma-\rho/(1-\rho)}\right)^{-1/\gamma} \underline{x} y_j^{1/\gamma-\frac{1-\rho}{\rho}} \left( \sum_{k=1}^N  \mu_k  (w_k\tau_{kj})^{-\gamma}  \kappa_{kj}^{1-\gamma\frac{1-\rho}{\rho}}\right)^{-1/\gamma}\\
+%  %
+    P_j&=  \lambda_2  Y_j^{\frac{1}{\gamma}-\frac{1}{\sigma-1}} \Theta_j \label{eq:simple_P}
+    \end{align}
+where $\lambda_2$ is a constant, $
+  \lambda_2 = [\sigma^{-1}\alpha]^{\frac{1}{\gamma}-\frac{1}{\sigma-1}} \frac{\sigma}{\sigma-1} \left( \frac{ \gamma \underline{\varphi}^\gamma}{\gamma-(\sigma-1)}\right)^{-1/\gamma} ,
+$
+and
+\begin{align}
+  \Theta_j^{-\gamma} = \sum_{k=1}^N  \mu_k  (w_k\tau_{kj})^{-\gamma}  \kappa_{kj}^{1-\gamma\frac{1}{\sigma-1}}.
+\end{align}
+Notice that $\Theta$ has the the potential number of firms ($\mu$), the cost of inputs ($w$), and the costs of trading ($\tau$, $\kappa$) for all the other countries selling into $j$.  This a multilateral resistance kind of term.
+
+Inspecting \eqref{eq:price-simple}, we see that bigger markets ($1/\gamma-1/(\sigma-1)<0$) have lower prices. Bigger markets allow more firms to cover the fixed cost of serving $j$, so there are more varieties.
+
+Using \eqref{eq:simple_P}, we can rewrite the cutoff productivity as
+\begin{align}
+ % \hat{x}_{ij}&=\lambda_2^{-1}\rho^{-1}[(1-\rho)\alpha]^{-(1-\rho)/\rho} %Y_j^{-1/\gamma}\frac{w_i\tau_{ij}}{\theta_j} \kappa_{ij}^{(1-\rho)/\rho}\\
+  %
+  \hat{\varphi}_{ij}&=\lambda_4 Y_j^{-1/\gamma}\frac{w_i\tau_{ij}}{\Theta_j} \kappa_{ij}^{\frac{1}{\sigma-1}}\\
+  %
+  \hat{\varphi}_{ij}^{-\gamma} & =\lambda_4^{-\gamma} Y_k \left(\frac{w_i\tau_{ij}}{\Theta_j}\right)^{-\gamma}  \kappa_{ij}^{-\gamma\frac{1}{\sigma-1}}\\
+  %
+  \hat{\varphi}_{ij}^{\sigma-1-\gamma}&=\lambda_4^{\sigma-1-\gamma} Y_j^{1-\frac{\sigma-1}{\gamma}}\left(\frac{w_i\tau_{ij}}{\Theta_j}\right) ^{\sigma-1-\gamma} \kappa_{ij}^{1-\frac{\gamma}{\sigma-1}}
+\end{align}
+where $
+  \lambda_4=[\sigma^{-1}\alpha]^{\frac{-1}{\gamma}}\left(\frac{\gamma\underline{\varphi}^{-\gamma}}{\gamma-(\sigma-1)}\right)^\frac{1}{\gamma}.
+$
+We will use $\hat{\varphi}_{ij}^{-\gamma}$ and $\hat{\varphi}_{ij}^{\sigma-1-\gamma}$ in later derivations, so it's useful to write them out here.
+
+Aggregate profits in country $i$ are the sum of the profits of all firms owned by country $i$ that are active across each market, $k$.  They are made up of two parts: the variable profits earned by firms, minus the fixed costs paid by firms.
+\begin{align} \label{eq:aggprofit}
+  \pi_i& = \sum_{k=1}^N \int_{\hat{\varphi}_{ik}} \sigma^{-1}\alpha Y_k \left(\frac{\sigma}{\sigma-1}\frac{w_i\tau_{ik}}{P_k}\right)^{-(\sigma-1)} \varphi^{\sigma-1}\mu_i\gamma\underline{\varphi}^\gamma \varphi^{-\gamma-1}d\varphi - \sum_{k=1}^N\kappa_{ik}\mu_i\underline{\varphi}^\gamma \hat{\varphi}_{ik}^{-\gamma}
+  %
+ % \pi_i& = \sum_{k=1}^N   (1-\rho)\alpha Y_k \left(\frac{w_i\tau_{ik}}{P_k\rho}\right)^{\frac{-\rho}{1-\rho}} \mu_i\frac{\gamma\underline{x}^\gamma}{\gamma-\rho/(1-\rho)} \hat{x}_{ik}^{\frac{\rho}{1-\rho}-\gamma} - \sum_{k=1}^N\kappa_{ik}\mu_i\underline{x}^\gamma \hat{x}_{ik}^{-\gamma}
+%  %
+\end{align}
+The first term is
+\begin{align}
+    %\Pi_i^1& = (1-\rho)\alpha \frac{\gamma\underline{x}^\gamma}{\gamma-\frac{\rho}{1-\rho}}
+%     \sum_{k=1}^N \mu_i   Y_k \left(\frac{w_i\tau_{ik}}{P_k\rho}\right)^{\frac{-\rho}{1-\rho}} \hat{x}_{ik}^{\frac{\rho}{1-\rho}-\gamma}\\
+%     %
+%     \Pi_i^1& = (1-\rho)\alpha \frac{\gamma\underline{x}^\gamma}{\gamma-\frac{\rho}{1-\rho}}
+%     \sum_{k=1}^N \mu_i   Y_k^{\frac{1}{\gamma}\frac{\rho}{1-\rho}} \left(\frac{w_i\tau_{ik}}{\rho}\right)^{\frac{-\rho}{1-\rho}} \lambda_2^{\frac{\rho}{1-\rho}}\theta_k^{\frac{\rho}{1-\rho}}\hat{x}_{ik}^{\frac{\rho}{1-\rho}-\gamma}\\
+%     %
+%    \Pi_i^1& = \rho^{\frac{\rho}{1-\rho}}\lambda_4^{\frac{\rho}{1-\rho}-\gamma}\lambda_2^{\frac{\rho}{1-\rho}}(1-\rho)\alpha \mu_i\frac{\gamma\underline{x}^\gamma}{\gamma-\frac{\rho}{1-\rho}}
+%     \sum_{k=1}^N Y_k \left(\frac{w_i\tau_{ik}}{\theta_k}\right)^{-\gamma} \kappa_{ik}^{1-\frac{\gamma(1-\rho)}{\rho}}\\
+     %
+     \pi_i^{(1)}& = \alpha\sigma^{-1}\mu_i
+     \sum_{k=1}^N Y_k \left(\frac{w_i\tau_{ik}}{\Theta_k}\right)^{-\gamma} \kappa_{ik}^{1-\frac{\gamma}{\sigma-1}},
+\end{align}
+the second term is
+\begin{align}
+   \pi^{(2)}_i&=\sum_{k=1}^N\kappa_{ik}\mu_i\underline{\varphi}^\gamma \hat{\varphi}_{ik}^{-\gamma}=\mu_i\underline{\varphi}^\gamma \lambda_4^{-\gamma}\sum_{k=1}^NY_k \left(\frac{w_i\tau_{ik}}{\Theta_k}\right)^{-\gamma}  \kappa_{ik}^{1-\gamma\frac{1}{\sigma-1}},
+\end{align}
+and aggregate profits are
+\begin{align}
+%  \Pi_i =& \frac{\alpha\rho}{\gamma}  \sum_{k=1}^NY_k \mu_i \left(\frac{w_i\tau_{ik}}{\theta_k}\right)^{-\gamma}  \kappa_{ik}^{1-\gamma\frac{1-\rho}{\rho}}\\
+%  %
+  \pi_i  =& \frac{\alpha(\sigma-1)}{\gamma\sigma}  \sum_{k=1}^NY_k  \frac{\mu_i(w_i\tau_{ik})^{-\gamma}\kappa_{ik}^{1-\gamma\frac{1-\rho}{\rho}}}{\Theta_k^{-\gamma}}.
+\end{align}
+Let $\theta_{ik}=\mu_i(w_i\tau_{ik})^{-\gamma}\kappa_{ik}^{1-\gamma\frac{1}{\sigma-1}}$, so that $\sum_{i=1}^N\theta_{ik}=\Theta_k^{-\gamma}$. [To do: Clean up the definition of $\Theta$ to get rid of that power.]
+Aggregate profits form a system of equations,
+\begin{align}
+  \pi_i  =& \frac{\alpha(\sigma-1)}{\sigma\gamma}  \sum_{k=1}^N (w_kL_k + \pi_k)  \frac{\theta_{ik}}{\Theta_k^{-\gamma}} \;\;\;\; i=1,\ldots,N. \label{eq:linsys}
+\end{align}
+Note that this is a system of $N$ linear equations in $N$ unknowns --- the $\pi_i$.  In a perfectly symmetric world, we would have $\pi_i=\pi=\alpha(\sigma-1)/(\sigma\gamma-\alpha(\sigma-1))$. Solve this to find the equilibrium of the model.
+
+\subsection*{Existence of equilibrium}
+Let's set up the system defined in \eqref{eq:linsys} as a matrix equation.  Rearrange terms to yield
+\begin{align}
+    \pi_i - \frac{\alpha(\sigma-1)}{\gamma\sigma}\sum_{k=1}^N \pi_k\frac{\theta_{ik}}{\Theta_k^{-\gamma}}  =&  \frac{\alpha(\sigma-1)}{\gamma\sigma}\sum_{k=1}^N \frac{\theta_{ik}}{\Theta_k^{-\gamma}}w_kL_k \;\;\;\; i=1,\ldots,N.
+\end{align}
+If we define
+\begin{equation}
+  b_i = \frac{\alpha(\sigma-1)}{\gamma\sigma}\sum_{k=1}^N \frac{\theta_{ik}}{\Theta_k^{-\gamma}}w_kL_k  \qquad \text{and} \qquad d_{ik}=\frac{\alpha(\sigma-1)}{\gamma\sigma}\sum_{k=1}^N\frac{\theta_{ik}}{\Theta_k^{-\gamma}},
+\end{equation}
+we can write the system in \eqref{eq:linsys} as
+\begin{equation}
+  [I-D]\pi=b \label{eq:matrixsys}
+\end{equation}
+which facilitates a simple proof of existence:  The column sums of $D$ are $\alpha(\sigma-1)/(\gamma\sigma)<1$ and the vector $b$ is strictly positive, so the Perron-Frobenius theorem tells us that the vector $\pi$ which solves   \eqref{eq:matrixsys} is strictly positive.   In fact, $[I-D]^{-1}$ is strictly positive. [To do: There is more that we can show.]
+
+\textbf{Chaney's financial structure}\\
+In our derivation, we have assumed that each country's agents own the firms that are created in the country.  \citet{chaney08} assumes that $Y_i=w_iL_i+w_iL_i\pi$, which he interprets as each country owning shares in a global mutual fund which has a dividend of $\pi=\sum_j\pi_j/\sum_jw_jL_j$, and each country owns shares in proportion to its labor income.
+\begin{align}
+  \pi_i  =& \frac{\alpha(\sigma-1)}{\gamma\sigma}  \sum_{k=1}^N (w_kL_k + w_kL_k\pi)  \frac{\theta_{ik}}{\Theta_k^{-\gamma}}\\
+  %
+   \pi_i  =& \frac{\alpha(\sigma-1)}{\gamma\sigma}  (1 + \pi)\sum_{k=1}^N w_kL_k  \frac{\theta_{ik}}{\Theta_k^{-\gamma}}
+\end{align}
+Take the summation over $i$,
+\begin{align}
+  \sum_{i=1}^N\pi_i  =& \frac{\alpha(\sigma-1)}{\gamma\sigma}  (1 + \pi) \sum_{i=1}^N\sum_{k=1}^N w_kL_k  \frac{\theta_{ik}}{\Theta_k^{-\gamma}},
+\end{align}
+and note that both the double summation on the right-hand side is equal to world labor income,
+\begin{align}
+  \sum_{i=1}^N\pi_i  =& \frac{\alpha(\sigma-1)}{\gamma\sigma}  (1 + \pi) \sum_{i=1}^N w_kL_k\\
+  \pi  =& \frac{\alpha(\sigma-1)}{\gamma\sigma}  (1 + \pi).
+\end{align}
+
+In Chaney's model, $\pi=\alpha(\sigma-1)/(\sigma\gamma-\alpha(\sigma-1))$, and $Y_i=w_iL_i\gamma\sigma/(\sigma\gamma-\alpha(\sigma-1))$. Notice that Chaney's assumption yields --- even in a model with asymmetric trade costs --- the same country-level profits as in the general model with symmetric countries.
+
+\subsection*{Trade flows}
+Aggregate trade flows from $i$ to $j$
+\begin{align}
+  X_{ij}& = \int_{\hat{\varphi}_{ij}}\alpha\left(w_jL_j+\pi_j \right)P_j^{\sigma-1}\left(\frac{\sigma}{\sigma-1}\frac{w_i\tau_{ij}}{\rho \varphi} \right)^{-(\sigma-1)} \mu_i \gamma \underline{\varphi}^{\gamma} \varphi^{-\gamma-1} d\varphi\\
+  %
+  %X_{ij}& = \alpha y_j P_j^{\frac{\rho}{1-\rho}}\left(\frac{w_i\tau_{ij}}{\rho} \right)^{\frac{-\rho}{1-\rho}}\mu_i \gamma \underline{x}^{\gamma}\int_{\hat{x}_{ij}} x^{\frac{\rho}{1-\rho}-\gamma-1}dx\\
+%  %
+%  X_{ij}& = \alpha y_j P_j^{\frac{\rho}{1-\rho}}\left(\frac{w_i\tau_{ij}}{\rho} \right)^{\frac{-\rho}{1-\rho}} \mu_i \frac{\gamma \underline{x}^{\gamma}}{\gamma-\frac{\rho}{1-\rho}} \hat{x}_{ij}^{\frac{\rho}{1-\rho}-\gamma}\\
+%  %
+%    X_{ij}& = \alpha \lambda_2^{\frac{\rho}{1-\rho}}y_j^{\frac{\rho}{\gamma(1-\rho)}}\theta_j^{\frac{\rho}{1-\rho}}\left(\frac{w_i\tau_{ij}}{\rho} \right)^{\frac{-\rho}{1-\rho}} \mu_i \frac{\gamma \underline{x}^{\gamma}}{\gamma-\frac{\rho}{1-\rho}} \hat{x}_{ij}^{\frac{\rho}{1-\rho}-\gamma}\\
+%    %
+%    X_{ij}& = \alpha \lambda_2^{\frac{\rho}{1-\rho}}y_j^{\frac{\rho}{\gamma(1-\rho)}}\theta_j^{\frac{\rho}{1-\rho}}\left(\frac{w_i\tau_{ij}}{\rho} \right)^{\frac{-\rho}{1-\rho}} \mu_i \frac{\gamma \underline{x}^{\gamma}}{\gamma-\frac{\rho}{1-\rho}} \lambda_4^{\frac{\rho}{1-\rho}-\gamma} y_j^{1-\frac{\rho}{\gamma(1-\rho)}}\left(\frac{w_i\tau_{ij}}{\theta_j}\right) ^{\frac{\rho}{1-\rho}-\gamma} \kappa_{ij}^{1-\frac{\gamma(1-\rho)}{\rho}}\\
+%    %
+%    X_{ij}& = \alpha \lambda_2^{\frac{\rho}{1-\rho}} \rho^{\frac{\rho}{1-\rho}}\frac{\gamma \underline{x}^{\gamma}}{\gamma-\frac{\rho}{1-\rho}} \lambda_4^{\frac{\rho}{1-\rho}-\gamma} Y_j \mu_i \left(\frac{w_i\tau_{ij}}{\theta_j}\right) ^{-\gamma} \kappa_{ij}^{1-\frac{\gamma(1-\rho)}{\rho}}\\
+%    %
+    X_{ij}& = \alpha Y_j  \frac{\mu_i\left(w_i\tau_{ij}\right) ^{-\gamma} \kappa_{ij}^{-(\frac{\gamma}{\sigma-1}-1)}}{\Theta_j^{-\gamma}}=\alpha Y_j\frac{\theta_{ij}}{\Theta_j^{-\gamma}}.
+\end{align}
+Aggregate trade is a share of the total expenditure on heterogenous goods in country $j$, where that share is determined by the mass of potential firms, input costs, variable costs, and fixed costs in all of the countries, relative to those in country $i$.
+
+\subsection*{Gravity and the intensive and extensive margins}
+This style of model has both an intensive and extensive margin of trade.  The extensive margin refers to a firm exporting anything --- it is a binary concept.  The intensive margin refers to how much a firm exports conditional on exporting. Understanding how these two margins are affected by trade barriers is key to understanding how total trade behaves.
+
+In Chaney's model, $\mu_i$ is proportional to $L_i$, so with a little manipulation,  gravity is [To do: derive this from above.]
+\begin{equation}\label{eq:chaney_gravity}
+    X_{ij} = \alpha \times \frac{Y_i\times Y_j}{Y} \times \left(\frac{w_i\tau_{ij}}{\Theta_j}\right)^{-\gamma} \times \left( \kappa_{ij} \right) ^ {-(\gamma\frac{1}{\sigma-1}-1)}
+\end{equation}
+\begin{enumerate}
+  \item Again, unit income elasticities.
+  \item The $\Theta_j$ terms play the role of a multilateral resistance. Not only do the costs of production in the exporting country, bilateral trade costs, and the bilateral fixed cost matter, but the costs of production, bilateral trade costs, and fixed costs of all other countries matter, too.
+  \item The elasticity with respect to variable trade costs is $\gamma$ and not $\sigma-1$. This is similar to the \citet{EK02} result that a parameter that controls the amount of heterogeneity in producers is key, not the elasticity of substitution.  As in Eaton and Kortum, this is the result of the a special choice in distribution.  In this case, it is the memoryless property of the Pareto distribution.
+
+      The importance of $\gamma$ has a nice interpretation.  Higher $\gamma$ implies more variance in the distribution, so there is more potential for competition. This result goes away if we move from the Pareto distribution to, say, the log normal distribution.
+  \item Since $\gamma>\sigma-1$, the elasticity of trade is greater than it is in a model without heterogeneity.
+  \item The elasticity of trade with respect to fixed costs is $\gamma/(\sigma-1) - 1$.  Lower elasticities in consumption increase the response to a change in entry barriers.  When the elasticity of substitution is low, the impact of trade barriers is greater.  This is due to the extensive margin.  When goods have low substitutability, then the profit a monopolistic competitor can make is higher.  Thus, a change in trade barriers has a larger increase in export profit, so the extensive margin response is larger.
+\end{enumerate}
+
+\begin{figure}[ht]
+\centering
+\caption{Decrease in variable (left panel) and fixed (right panel) trade costs.}
+\label{fig:liberalize}
+\parbox{2.7in}{
+\centering
+\begin{tikzpicture}[xscale=6, yscale=3]
+  \draw[<->] (0,1.2)--(0,-0.5);
+  \node[left] at (0,1.2) {$\pi_{ij}(\varphi)$};
+  \node[left] at (0,-0.25) {$-w_i\kappa_{ij}$};
+  \draw[<->](-0.2,0)--(1.1,0)  node[below]{$\varphi$};
+  \draw[thick, domain=0:1] plot(\x, {\x^2-0.25)} ) node[right]{high $\tau_{ij}$} ;
+  \draw[thick, blue, domain=0:1] plot(\x, {1.5*\x^2-0.25)} ) node[right, black]{low $\tau_{ij}$} ;
+  \draw[dashed] (0.5,-0.1) node[below]{$\hat{\varphi}$}--(0.5,0);
+  \draw[dashed] (0.41,-0.1) node[below]{$\hat{\varphi}'$}--(0.41,0);
+\end{tikzpicture}
+}
+\qquad \qquad \qquad
+\begin{minipage}[c]{2.7in}
+\centering
+\begin{tikzpicture}[xscale=6, yscale=3]
+  \draw[<->] (0,1.2)--(0,-0.5);
+  \node[left] at (0,1.2) {$\pi_{ij}(\varphi)$};
+  \node[left] at (0,-0.25) {$-w_i\kappa_{ij}$};
+  \node[left] at (0,-0.1) {$-w_i\kappa_{ij}'$};
+  \draw[<->](-0.2,0)--(1.1,0)  node[below]{$\varphi$};
+  \draw[thick, domain=0:1] plot(\x, {\x^2-0.25)} ) node[right]{high $\kappa_{ij}$} ;
+  \draw[thick, blue, domain=0:1] plot(\x, {\x^2-0.1)} ) node[right, black]{low $\kappa_{ij}$};
+  \draw[dashed] (0.5,-0.1) node[below]{$\hat{\varphi}$}--(0.5,0);
+  \draw[dashed] (0.31,-0.15) node[below]{$\hat{\varphi}'$}--(0.31,0);
+\end{tikzpicture}
+\end{minipage}
+\end{figure}
+
+
+What is lurking below results \#3 and \#5?  When we lower the variable trade costs, two things happen.
+\begin{enumerate}
+\item There is an intensive margin response.  Firms that were already exporting now export more.  This follows directly from \eqref{eq:sales}, and notice that the elasticity in the intensive margin is $\sigma-1$.
+
+\item There is an extensive margin response.   In the left panel of figure \ref{fig:liberalize}, we can see that decreasing the variable trade costs increases the profits a firm can earn which shifts the break even productivity to the left.  More firms are now exporting.
+\end{enumerate}
+
+Completely differentiate \eqref{eq:chaney_gravity} with respect to variable costs and find that
+\begin{equation}
+    -\frac{d \log X_{ij}}{d \log \tau_{ij} } = \left(\sigma -1  \right) + \left(\gamma - \left(\sigma-1 \right) \right) = \gamma
+\end{equation}
+The first term on the right hand side is the intensive margin contribution to the total elasticity, and it is related to substitutability in preferences --- just like we would expect.  The second term is the elasticity from the extensive margin.  It depends on both the variance in the productivity distribution and the elasticity of substitution, and it exactly cancels out the intensive margin effect. (Again, this is a Pareto distribution result.)
+
+When we lower the fixed cost of exporting the intensive margin effect is generally small.  Once a firm has decided to enter a market and pay the fixed cost, the fixed cost no longer matters for the firm's decisions.  The firm's price and sales volume do not depend on the fixed cost. There may be some impact on the intensive margin through the general equilibrium effects on $w_i$ and $\pi_i$, but the \citet{chaney08} model kills off these effects. (The effects would likely be small, anyway.)  If we Completely differentiate \eqref{eq:chaney_gravity} with respect to fixed costs, we have
+\begin{equation}
+    -\frac{d \log X_{ij}}{d \log \kappa_{ij} } = 0 + \frac{\gamma}{\sigma-1}-1.
+\end{equation}
+Here, there is no intensive margin response.  This is because we have effectively killed of the general equilibrium response of wages and incomes to a change in trade barriers.  This is all extensive margin, and the intuition follows from \#5, above.
+
+
+\subsection*{Computation}
+The Pareto versions of the model can be solved directly by solving the system of linear equations in \eqref{eq:linsys}, but it is not very hard to solve the more general model.
+
+In a model with the outside good, the wages are pinned down, and algorithm below is enough to compute an equilibrium.  In a model without an outside good, wages are endogenous.  The algorithm below is then an ``inner loop" and an outer loop can be added to also solve for equilibrium wages.
+\begin{enumerate}
+    \item Guess $\pi_{i}$ and $P_i$ for all $i$ (this is $2\times N$ unknowns)
+    \item Use these guesses to compute cutoff productivities $\hat{\varphi}_{ij}$
+
+    \item Using the $\hat{\varphi}_{ij}$, compute the implied aggregate price indices using \eqref{eq:P}. Let's call them $P_i'$.  This requires computing an integral.  If you have not done this before, Google ``quadrature."
+
+    \item Using the $\hat{\varphi}_{ij}$ and the guesses from step 1, compute the implied aggregate profits using \eqref{eq:aggprofit}. Let's call them $\pi_i'$.  This also requires computing an integral.
+
+    \item Check: Does $\pi_i'=\pi_i$ and $P_i'=P_i$ for all $i$?  If not, go back to step 1 and update the guesses.
+\end{enumerate}
+
+This algorithm defines a system of $2N$ nonlinear equations in $2N$ unknowns. Write a function that takes the $P_i$ and $\pi_i$ as arguments and returns the differences defined in step 5.  Pass this function to a nonlinear equation solver, like fsolve in MATLAB --- done!
+
+To solve a model with a free entry condition and an endogenous mass of entrants, set $\pi_i=0$, and choose $\mu_i$ (the mass of potential entrants that take draws from the productivity distribution) in step 1.  Replace $\pi_i'=\pi_i$ with the free entry condition in each country: The expected value of taking a draw from the productivity distribution is exactly equal to the cost of taking a draw.
+
+\section{What's Next?}
+A large literature has developed taking on different aspects of these kinds of models.  \citet{melitzOttaviano} move away from CES preferences, generating nonconstant markups in a tractable way.  \citet{bernardEaton} combine a Ricardian model with  Bertrand pricing to think about the distribution of firm productivity.  [To do: Add more.]
+
+\setstretch{1.0}
+\setlength{\parskip}{0.0cm}
+\printbibliography
+\end{document}
