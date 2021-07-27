@@ -1,0 +1,341 @@
+\documentclass[11pt, pdftex]{article}
+\usepackage{setspace,palatino,multirow}
+\usepackage{amsmath,amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{pdflscape}
+\usepackage{layout}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{pgfplots}
+    \pgfplotsset{compat=1.10}
+
+
+
+\usepackage{fancyhdr}
+    \setlength{\headheight}{16pt}
+    \pagestyle{fancy}
+    \rhead[]{Kim J. Ruhl}
+    \lhead[]{Firms that trade}
+    \cfoot[]{\textit{Subject to change.  This version \today.}}
+    \rfoot[]{ $|$ \thepage}
+
+\usepackage[pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue, bookmarks=true, pdfstartview={FitV}]{hyperref}
+
+
+%lanuage=american gets the punctuation within the quotes, natbib=true means use \citet as "\citeasnoun"
+\usepackage[backend=bibtex, natbib=true, sorting=nyt, style=authoryear, bibstyle=authoryear, isbn=false, language=american]{biblatex}
+    \addbibresource{D:\\Dropbox\\Biblio\\bib_master.bib}
+    \renewbibmacro{in:}{}           %Kill the default "in:"
+    \setlength\bibitemsep{0.25cm}
+
+%Kill the dot between volume and number, then add paren around the number.
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+%No header
+\DefineBibliographyStrings{english}{%
+  references = {------------------},
+}
+
+%titlesec definitions
+\titlespacing*\section{0pt}{0pt}{0pt}
+\titlespacing*\subsection{0pt}{0pt}{0pt}
+
+
+\setstretch{1.1}
+\raggedbottom
+
+\setitemize{itemsep=0.5ex}
+\setenumerate{itemsep=0.5ex}
+
+\setlength{\parskip}{0.2cm}
+\setlength{\voffset}{0.0cm}
+\setlength{\headsep}{5mm}           %space after header, before content
+\setlength{\parindent}{0cm}         %no indents
+\setlength{\textheight}{9.25in}
+
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\std}{\mathrm{std}}
+\newcommand{\cor}{\mathrm{cor}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\ph}{\phantom}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\sig}{\sigma}
+\newcommand{\lam}{\lambda}
+
+
+\begin{document}
+\ph{whatever}
+\medskip
+
+\centerline{\bf \Large Firms that trade}
+\medskip
+
+Models with perfectly competitive markets and constant returns to scale production, typically, do not generate ``firms.'' We can talk about production functions for a good, but cannot say anything about firm characteristics. In this note we begin to think about models of firms. 
+
+\section{Stylized facts and the discrete choice approach}
+Looking at plant-level\footnote{Most people use the word \textit{plant} to describe a physical production location, and the word \textit{firm} to describe an organizational unit, which may be made up of several plants.  Most models feature one-plant firms, and I tend to use the two terms interchangeably.  Particularly when dealing with data, we should be careful about how we use these two terms. } data (typically censuses or surveys that cover only manufacturing) from several countries and time periods, a few big things jump out.
+\begin{enumerate}
+  \item About 20 percent of plants have non-zero exports. [This is a statement about direct exporting. Firms that export through intermediaries---like wholesalers---would not be picked up in this data.]
+  \item Exporting is a persistent state: Conditional on exporting this year, there is about a 90 percent chance of exporting next year.
+  \item Exporters are bigger, pay higher wages, and are more productive.
+\end{enumerate}
+These facts motivate a discrete choice approach.  Suppose that there are start-up costs to exporting: relabeling goods, upgrading quality, making business connections, finding distributors, doing market research.  Let $\pi_x(s_{it},p_{t})$ be the profit plant $i$ earns if it exports, where $s_{it}$ are plant level variables and $p_{t}$ are aggregate variables.  Let $F^0$ be a fixed cost of entry.  The net present value of a firm contemplating export entry is
+\begin{equation}
+  V_{it}^x=E_t\sum_{n=t}^\infty m_{n}(p_n) \left[\pi_x(s_{nt},p_{n})-\pi_d(s_{nt},p_{n})\right] - F_{t}^0,
+\end{equation}
+where $m_n$ is the (possibly stochastic) discount factor, and $\pi_d$ is the profit from only selling to the domestic market. The export entry decision is straightforward: Enter the export market it $V_{it}^x>0$, do not enter the export market otherwise.
+
+Suppose firms are heterogeneous in the profits they can earn in the export market.  The entry cost induces selection on firm type, so that only the firms profitable enough will enter.  With a large enough entry cost, many firms will not export, giving us fact \#1.  If higher profitability is associated with larger plants, or more productive plants, we also have fact \#3. We can generate fact \#2 if we introduce a fixed cost that the exporter must pay in each period to continue operating  in the export market,  but the sequence notation gets clunky.  It is clearer in the recursive problem below.
+\section{\citet{robertsTybout97}}
+The data covers Colombian manufacturing firms with more than 10 employees.  The data cover 1981--1989.  Table 1 highlights the dynamics of this period
+\begin{enumerate}
+  \item 1981--1983: small appreciation of RER, export participation falls
+  \item 1983--1989: large devaluation (30 percent), increase in volume of exports and number of exporters, but number of new exporters is pretty small.  Why?
+  \item Evidence from surveys (pg. 550) about obstacles to exporting.
+\end{enumerate}
+
+\begin{figure}
+\centering
+\caption{The real exchange rate and export volumes in Colombia.}
+\label{fig:rer}
+\begin{tikzpicture}[scale=1.1]
+    \pgfkeys{/pgf/number format/set thousands separator = {}}
+  \begin{axis}[ylabel=index, tick pos=left, axis x line* = bottom, axis y line* = left]
+    \addplot[red, mark=o, mark options={red}, x tick label style={fixed}]
+        coordinates{
+        (1981,      84.0)
+        (1982,      79.5)
+        (1983,      80.5)
+        (1984,      89.8)
+        (1985,      102.2)
+        (1986,      113.6)
+        (1987,      113.7)
+        (1988,      112.3)
+        (1989,      115.3)
+        };
+    \addplot[black, mark=square, mark options={black}]
+    coordinates{
+    (1981,      58.5)
+    (1982,      64.1)
+    (1983,      63.8)
+    (1984,      59.1)
+    (1985,      66.4)
+    (1986,      100.0)
+    (1987,      88.6)
+    (1988,      103.1)
+    (1989,      127.2)
+    };
+    \node[coordinate, pin=right:{Export volume}] at (axis cs: 1985.1, 66){};
+    \node[coordinate, pin=left:{RER}] at (axis cs: 1985.5, 110){};
+  \end{axis}
+\end{tikzpicture}
+\end{figure}
+
+This is related to a question in the literature that concerns the loose relationship between  trade flows and real exchange rates, which we can see in this episode (figure \ref{fig:rer}).  Until this paper, most evidence has been based on aggregate or sectoral models and data, so the sunk cost hypothesis remained an untested hypothesis.
+
+Table 2 introduces the transition rates.  A firm can be either an exporter, $x$, or a non-exporter, $d$. The transition rate from $t$ to $t+1$ is
+\begin{equation}
+    \rho_t^{jk} = \frac{N_{t+1}^k}{N_t^j}
+\end{equation}
+which is the number of plants of type $k$ in period $t+1$ divided by the number of plants of type $j$ in period $t$. In table 2, for 1982--1983, we have $\rho^{dd}=0.97$ and $\rho^{xx}=0.83$: Exporting (or not exporting) is a persistent state.  Export entry rates are about 3 percent and exit rates are about 13 percent.
+
+This persistence could come from two sources:
+\begin{enumerate}
+  \item Sunk costs of entry
+  \item Persistent firm heterogeneity
+\end{enumerate}
+Identifying these sources is empirically difficult, and one of the major goals of  the paper. A second tension arises from the ``churning" of plants into and out of exporting.  60 percent of plants that exported at some point changed status more than once. (Data issues?)  Here the possibilities are
+\begin{enumerate}
+  \item Small entry costs
+  \item A benefit to having exported recently
+\end{enumerate}
+So the main questions asked here are \textbf{Are sunk costs important for explaining firm export behavior?} and \textbf{How quickly does export experience decay in easing reentry into the export market?}
+\subsection{Model}
+This is a model of a plant's decision problem.  Assume that exporting profits are separable from domestic profits.  (Constant returns to scale in production will generate this.)  Plant $i$'s gross profit from exporting is $\pi_i( {p}_t,{s}_{it})$, where ${p}_t$ is a vector of exogenous variables (exchange rates, demand shifters, etc.) and ${s}_{it}$ is a vector of state variables (capital stock, etc.).
+
+If a plant has never exported it must pay $F^0_{it}$ to enter, and if the plant last exported in year $t-j (j\geq 2)$, pays a reentry cost of $F^j_{it}$. Note: these costs vary across time and firm.
+
+Let $Y_{it}$ be equal to 1 if plant $i$ exports in $t$ and 0 otherwise.  The exporting history of plant of age $J_i$ is a vector of zeros and ones,
+\begin{equation}
+    Y_{it}^{(-)} = \left\{ Y_{i,t-j} \vert j=0,\dots,J_i\right\}.
+\end{equation}
+
+
+
+The profit in period $t$ of the plant is
+\begin{equation}
+    R_{it}\left( Y_{it}^{(-)} \right) = Y_{it}\left[ \pi_{it}\left( p_t, s_{it} \right)-F_{it}^0\left(1-Y_{i,t-1} \right)-\sum_{j=2}^{J_i}\left(F_{it}^j - F_{it}^0 \right)\widetilde{Y}_{i,t-j} \right] -X_iY_{i,t-1}\left(1-Y_{it} \right),
+\end{equation}
+where $\pi^*$ is the maximized value of period profits, $X_i$ is the scrap value of the export operation, and
+\begin{equation}
+    \widetilde{Y}_{i,t-j}=\Pi_{k=1}^{j-1}\left(1-Y_{i,t-k} \right)
+\end{equation}
+is equal to 1 if the plant last exported in $t-j$, and 0 otherwise. Notice that if you were exporting last period, this is equal to 0.
+
+Firms maximize discounted profits by choosing
+\begin{equation}
+    Y_{it}^{(+)} = \left\{ Y_{i,t+j} \vert j=0,\dots\right\}.
+\end{equation}
+The maximized value of the firm is
+\begin{equation}
+    V_{it}\left(\Omega_{it} \right) = \max_{Y_{it}^{(+)}} \; \; E_t \sum_{j=t}^\infty \delta^{j-t}R_{ij}\vert \Omega_{it},
+\end{equation}
+where $\Omega$ is the plant's information set.  This is a hard problem in sequence form.  Recursively we can write it as
+\begin{equation}
+    V_{it}\left(\Omega_{it} \right) = \max_{Y_{it}} \; \; \left[R_{it}\left( Y_{it}^{(-)} \right) + \delta E_t V_{i,t+1}\left(\Omega_{i,t+1} \vert Y_{it}^{(-)} \right)  \right].
+\end{equation}
+Rather than choose the entire future sequence of exporting decisions, choose only today's.  This is now a dynamic programming problem, although it is history dependent: All of the previous exporting decisions matter, because they determine the size of  the reentry cost. A firm will choose to export when
+\begin{align} \label{eq:choice}
+    \pi_{it}\left(p_t,s_{it} \right) &+ \delta E_t  \left[ V_{i,t+1}\left(\Omega_{i,t+1} \vert Y_{it}=1 \right) - V_{i,t+1}\left(\Omega_{i,t+1} \vert Y_{it}=0 \right) \right] \\
+     &\geq F_i^0 -\left(F_i^0+X_i \right)Y_{i,t-1}+\sum_{j=2}^{J_i}\left(F_{it}^j - F_{it}^0 \right)\widetilde{Y}_{i,t-j}, \notag
+\end{align}
+which just says that the value of exporting must be greater than the cost. Special cases:
+\begin{itemize}
+  \item No sunk costs, but only a fixed cost that must be paid in each period that the firm exports.  Export whenever $\pi_{it} > F_{it}$.  The future is irrelevant.
+  \item No entry costs at all.  Export whenever $\pi_{it} > 0$.
+\end{itemize}
+In the full model
+\begin{enumerate}
+  \item If a firm has never exported before, it needs LHS of \eqref{eq:choice} to be greater than $F^0$.
+  \item If a firm exported last period, it needs LHS of \eqref{eq:choice} to be greater than $-X_i$ to stay in the market.  Notice that this means that current profits can actually be negative. This creates hysteresis (and persistence).
+  \item If a firm last exported $j$ periods ago, it needs LHS of \eqref{eq:choice} to be greater than $F^j$. This is ``reentry" into the export market.
+\end{enumerate}
+Notice that 1 and 2 imply that the entry and exit thresholds are not identical.  Firm value has to be greater than $F^0$ to enter, but only great than $X$ to stay in the market.  For firm values that are between these two costs, the behavior of a firm depends on its history: If the firm is already in the export market, it will stay there, but if it is not already in the market it will not enter. Two otherwise identical firms will be behaving differently.
+
+In this framework we can ask, does exporting history help explain exporting status?
+\begin{enumerate}
+\item  Cost show up as coefficients on the indicator variables on the right hand side.
+Notice that costs influence the left hand side, too, but in a nonlinear way, so they are not identified.
+  \item Realizations of $p_t$  and $s_{it}$  influence decisions both by the effect on current profits and on the expected future profits.
+\end{enumerate}
+
+\subsection{Empirical model}
+Define the LHS of \eqref{eq:choice} as
+\begin{equation}
+    \pi^*_{it} = \pi_{it}\left(p_t, s_{it} \right) + \delta E_t  \left[ V_{i,t+1}\left(\Omega_{i,t+1} \vert Y_{it}=1 \right) - V_{i,t+1}\left(\Omega_{i,t+1} \vert Y_{it}=0 \right) \right],
+\end{equation}
+which is a latent variable. The discrete choice model is
+\begin{equation}
+    Y_{it} = \begin{cases}
+      1  &\mbox{if  }\; \pi^*_{it} - F_i^0 +\left(F_i^0+X_i \right)Y_{i,t-1}+\sum_{j=2}^{J_i}\left(F_{it}^0-F_{it}^j   \right)\widetilde{Y}_{i,t-j} \geq 0 \\
+      0 &\mbox{otherwise}.
+    \end{cases}
+\end{equation}
+How should we estimate this?  Two possibilities: (1)  Assume functional forms for $\pi$  and the processes over $s$ and $p$. (2)  Estimate a reduced form equation for $\pi^*-F^0$.
+
+The advantage of (1) over (2) is that we could recover of all the structural parameters of the profit function and use it to perform counterfactuals. The difficulty with (1) is that you  must make strong assumptions about functional forms, and, since fixed costs depend on how long you have been in the market, the decisions are conditioned on a ninth-order Markov Chain, which would be difficult to compute. The advantage of (2) over (1) is that it is easy, and still reveals information on sunk costs. The difficulty is that we don't get structural parameters. We are going with (2) in this paper.  See \citet{dasRobertsTybout} and \citet{ruhlWillis} for examples of (1).
+
+\subsection*{Implementation}
+Specify the reduced-from model of export profits as
+\begin{equation}
+    \pi^*_{it} -F^0_i = \mu_t +\beta Z_{it} +\epsilon_{it}
+\end{equation}
+
+ The $\mu_t$ are time specific industry- or macro-level variables that affect macro variability, but common to all plants (time fixed effect).  These are things like exchange rates, trade policy, and other things that would be in  $p_t$.
+
+  $Z_{it}$ is a vector of observable plant level characteristics: a constant, industry dummies, the ownership structure of the plant, some geography dummies, the terms of trade, wage rate, capital stock and plant age.
+
+Restrict fixed costs and scrap values to be the same across plants: Drop the $i$ on $F$ and $X$. Define $\gamma^j=F^0-F^j$ and $\gamma^0=F^0+X$ so that
+\begin{equation} \label{eq:est1}
+    Y_{it} = \begin{cases}
+      1  &\mbox{if  }\; \mu_t + \beta Z_{it} +\gamma^0Y_{i,t-1} +\sum_{j=2}^{J_i}\gamma^j\widetilde{Y}_{i,t-j} +\epsilon_{it} \geq 0 \\
+      0 &\mbox{otherwise}.
+    \end{cases}
+\end{equation}
+Once we've estimated this, we can
+\begin{enumerate}
+  \item Test for the importance of sunk costs by testing if the $\gamma$ are jointly zero.
+  \item See how fast export experience decays by observing the magnitudes of the $\gamma^j$.
+  \item Interact the $Y$  with the macro or plant level variables to see if sunk costs vary across time and plants.
+
+  \item Can look at terms in $Z$ to see how plant entry and exit behavior changes with changes in other variables.
+\end{enumerate}
+
+\subsection*{Econometric issues}
+\begin{enumerate}
+  \item Some unobserved variables, like managerial quality, will induce serial correlation in the error term.  If not accounted for, the persistence in the error term will show up as ``evidence of sunk costs."
+
+      Solution: Let $\epsilon$  be the sum of a permanent, plant-specific component and a 1st order AR component
+    \begin{equation}
+        \epsilon_{it} = \alpha_{i} + \omega_{it}
+    \end{equation}
+
+with  $\omega_{it}=\rho \omega_{i,t-1}+\eta_{it}$.  Assume $\alpha_i$  is i.i.d. normal across plants and  $\eta_{it}$  is i.i.d. normal across plants and time, ensuring that $\cov(Z_{it},\epsilon_{it})=\cov(\alpha_i,\omega_{it})=0$.   Can't identify the epsilon variance, so normalize it to 1.  Notice the $\alpha$ is permanent: It is the unobserved ``quality" of the plant that can give rise to the persistence in export behavior.  The horse race is between $\alpha$ and the $\gamma$s.
+
+The serial correlation in the error term is now a function of $\alpha_i$  and  $\rho$.
+
+\item What about pre sample years?  Since histories mattering is the null hypothesis, we care about what has happened before the sample.  Cannot take starting point as exogenous, since $Y_{i,T-J}$  is a function of $\alpha_i$  and realizations of $\omega_{it}$  which are correlated with $\epsilon_{it}$ .
+
+In the paper, they have a 9 year window, 1981-1989 and use a 3 lag model.  So what about 1981-1983? How do we determine the ``initial conditions?"
+
+Solution: (\cite{heckman}) let $Y_{it}$ when $t\leq J$  be a function of lagged explanatory variables (make an auxiliary model $\pi-F^0$ for the years that don't have lags),
+\begin{equation}
+    \pi^*_{it}-F^0=\lambda Z_{it}^P+\epsilon_{it}^P,
+\end{equation}
+where $Z_{it}^P$ is the distributed lag (i.e., many lags) in pre-sample realizations of the exogenous variables, plus 2-year lags of wages, capital stock and export price. Note the $P$ superscripts --- these are different variables.
+
+So the pre-sample export decision are described by
+\begin{equation}\label{eq:est2}
+    Y_{it} = \begin{cases}
+      1  &\mbox{if  }\; 0 \leq  \lambda Z_{it}^P  +\epsilon_{it}^P \\
+      0 &\mbox{otherwise},
+    \end{cases}
+\end{equation}
+where $\epsilon_{it}^P=\alpha_i^P+\omega_{it}^P$ with $\omega_{it}^P=\rho\omega^P_{i,t-1}+\eta_{it}^P$.  Notice the lack of lagged export decisions in this problem.
+
+A critical part of this procedure is to allow for $\alpha_i$ and $\alpha_i^P$ to be correlated.  This allows for serial correlation in $\epsilon^P_{i}$ and $\epsilon_{i}$.  This allows the model to attribute export status persistence to plant-level idiosyncratic characteristics that otherwise would get loaded onto the fixed costs.
+\end{enumerate}
+
+\subsection*{Estimation}
+Estimate \eqref{eq:est1} for $t>J$ and \eqref{eq:est2} for $t \leq J$.  Estimate: $\beta, \lambda, \mu, \var(\alpha), \rho, \var(\alpha^P), \rho^P, \cor(\alpha,\alpha^P)$ by simulated method of moments.
+
+\begin{enumerate}
+  \item Choose a parameter vector
+  \item Draw error terms for each time and plant, and use them with the exogenous data to get decisions over $Y_{it}$
+  \item Repeat 1 and 2 a lot of times and get probabilities of the trajectory $Y_{it}$
+  \item Use method of moment weights to get a metric of fit
+  \item Vary parameters until you have minimized the metric
+\end{enumerate}
+
+\subsection*{Results}
+Table 3.  Restricted $\alpha=\alpha^P$ and restrict $F$ to not vary over time.  Models without these restrictions didn't do any better.   Model 2 in column iii is their favorite.
+\begin{enumerate}
+  \item Jointly, the $\gamma$ are not zero, but only the first lag is significant. \textbf{Exporting history matters, but dies off quickly.}
+  \item Older, bigger, corporate plants have a higher probability of exporting. \textbf{Big could imply productive or IRS.  Age probably correlated with productivity.}
+  \item Geography matters: being near the coast increases the probability of exporting.
+  \item Prices are insignificant, but time dummies are probably soaking this up.
+  \item $\var(\alpha_i)$ is 0.67, so \textbf{ two-thirds of the variation is due to firm heterogeneity.}
+  \item Once we control for everything, $\rho$ is not significant.  Serially correlated idiosyncratic ``shocks" are not the driver of persistence.
+\end{enumerate}
+
+Table 4.  Aggregate the predicted $Y$ paths and compute transition rates.  Pretty good.
+
+Table 5.  Compute estimated probability of exporting for different plant types.  $\alpha=0$ is the mean.
+
+\begin{enumerate}
+  \item For below mean $\alpha$ export history doesn't matter.  These are bad plants, who are not profitable in the export market, so they don't ever really export.
+  \item For average plants --- especially with above average observables --- the probability of exporting is increasing in 1) how long ago you last exported, 2) how unobservably good you are relative to the mean (read down a column), 3) how observably good you are relative to the mean (read across a row by group)
+  \item History dependence decays quickly. (Look at $\alpha=1$ and 75th percentile group.)
+\end{enumerate}
+
+\subsection*{What next?}
+The big takeaway here is that both unobserved, permanent heterogeneity in export profitability and sunk entry costs are important in describing the export behavior of firms.  This result tees up a model in which firms with heterogeneous productivity make export decisions in the face of fixed entry costs.  This is the \citet{melitz} model.
+
+\setstretch{1.0}
+\setlength{\parskip}{0.0cm}
+\printbibliography
+\end{document}
