@@ -1,0 +1,135 @@
+\documentclass[11pt, pdftex]{article}
+\usepackage{setspace,palatino,multirow}
+\usepackage{amsmath,amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{layout}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+%Setup the header and footer
+\usepackage{fancyhdr}
+    \setlength{\headheight}{16pt}
+    \pagestyle{fancy}
+    \rhead[]{Kim J. Ruhl}                                  %Right header
+    \lhead[]{Data and Prices}            %Left header
+    \cfoot[]{\textit{Subject to change.  This version \today.}}     %Centered footer
+    \rfoot[]{ $|$ \thepage}
+
+\usepackage[pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue, bookmarks=true, pdfstartview={FitV}]{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Set up biblatex, which is much better than generic bibtex
+%lanuage=american gets the punctuation within the quotes, natbib=true means use \citet as "\citeasnoun"
+\usepackage[backend=bibtex, natbib=true, sorting=nyt, style=authoryear, bibstyle=authoryear, isbn=false, language=american]{biblatex}
+    \addbibresource{D:\\Dropbox\\Biblio\\bib_master.bib}
+    \renewbibmacro{in:}{}           %Kill the default "in:"
+    \setlength\bibitemsep{0.25cm}
+
+%Kill the dot between volume and number, then add paren around the number.
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+%No header
+\DefineBibliographyStrings{english}{%
+  references = {------------------},
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%titlesec definitions
+\titlespacing*\section{0pt}{0pt}{0pt}
+\titlespacing*\subsection{0pt}{0pt}{0pt}
+
+
+%Configure the enumitem package to handle list spacing
+\setitemize{itemsep=0.0ex}
+\setitemize{topsep=0.0in}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Page setup.  Some tweaks to deal with the header
+\setstretch{1.1}
+\raggedbottom
+\setlength{\parskip}{0.2cm}
+\setlength{\voffset}{0.0cm}
+\setlength{\headsep}{5mm}           %space after header, before content
+\setlength{\parindent}{0cm}         %no indents
+\setlength{\textheight}{9.25in}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\std}{\mathrm{std}}
+\newcommand{\cor}{\mathrm{cor}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\ph}{\phantom}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+
+\begin{document}
+\ph{whatever}
+\medskip
+
+\centerline{\Large  \textbf{International Trade Data and Prices}}
+\medskip
+
+International trade data is generally quite good.  Historically, countries derived significant revenues from tariffs, so institutions were created that did a good job of keeping track of what is coming into and out of a country.  Tariffs are generally levied on imports, so countries tend track imports a little more carefully than exports.
+
+ Most of the data on international trade in goods (trade in services is another story) is from customs records.  When a shipment crosses a national border, several bits of data about that shipment are recorded in order to, among other things, calculate any tariffs that are due. This data collection leads to data sets in which an entry  looks something like
+
+\begin{itemize}
+  \item Import country
+  \item Export country
+  \item Classification code (e.g. Harmonized System Code, STIC code)
+  \item Value ($P \times Q$, typically in U.S. dollars) of trade between the export and import country of the good identified by the HS code
+  \item Quantity (e.g. kilograms, barrels, pairs, count)
+\end{itemize}
+
+The classification system currently in use is the Harmonized System, which was adopted by most countries in 1988.  The harmonized system has several thousand potential entries.  The finest level of classification is a 10-digit code. The system is harmonized across countries at the 6-digit level, meaning that, e.g., good 020120 (Fresh or chilled unboned bovine meat) imported into Japan is the same as good 020120 imported into Germany. Beyond the 6-digit stratum (up to 10-digit codes), governments can create country-specific HS codes.
+
+\subsection*{Prices in the data}
+At what price is the value of a shipment quoted? To fix ideas, imagine the journey of a container of shoes from a plant in Italy to a shoe store in the United States.
+\begin{description}
+\item[Factory gate.] The price of the shoes as they leave the plant is the \textit{factory gate} price.
+
+\item[Free along side ship (FAS/FOB).] Suppose the container is put on a truck and driven to the port.  Once there, any export-country specific taxes and fees are paid.  At this point, the shoes are ready to leave the country.  Imagine them sitting on the loading dock, waiting to be lifted by a crane onto the ship.  The price of the good at this stage --- the factory gate price plus the intra-Italy shipping costs and export country fees --- is the \textit{free along side ship} price, or the FAS price.  A very similar term is the \textit{free on board} price.  The difference between FAS and FOB comes down to who is responsible for the loading of the ship, which is important when writing shipping contracts, but not too important for our purposes.
+
+\item[Cost, insurance, and freight (CIF).] Once the goods arrive in the U.S. port they are unloaded into the warehouse.  The price at this point --- the FOB price plus the further shipping costs and insurance --- is the \textit{cost, insurance, and freight} price.
+
+\item [Retail.] The importer pays any import tariffs or other fees on the goods, loads them onto a truck, and ships them to the retailer.  Along the way, a wholesale and retail markup is likely added.  The price of the good as it is offered to the purchaser of these Italian shoes --- the CIF price plus import tariffs, transportation costs from the port, and markups --- is the \textit{retail} price.
+\end{description}
+
+Back to the original question: Which price is used when reporting data?  When the shipment is reported by the exporting country (as an export) the goods are typically valued at the FOB price.  When the same shipment is reported by the importing country (as an import) it is typically valued at the CIF price.  You might think that comparing the CIF price to the FOB price could tell us something about shipping costs, but sadly, that doesn't seem to be the case. (See \cite{hummelsLugo}.)  Note that the retail price of a ``traded good" includes a lot of nontradable input costs, such as the transportation costs and wholesale and retail markups.
+
+\subsection*{Modeling prices and costs}
+Two things that (might) distinguish ``international" economics from regular-old closed economy economics are: (1) Countries often impose tariffs on goods as they cross national borders. In contrast, administrative regions  within a country (like U.S. states) rarely impose taxes on internal shipments; and (2) Transportation costs may be nontrivial.  There are lots of reasons why within-country shipments may be subject to nontrivial transportation costs; I'm not telling you that you can't use ``international trade" models to think about trade within a country.  See \citet{donaldson} as an example.
+
+The simplest way to incorporate these two kinds of costs into a model are to make them ad valorem frictions. Let $p_{ii}$ be the domestic price of a good in the exporting country $i$. A simple model will abstract from within-country trade costs, so you can think of $p_{ii}$ as the FOB price.
+\begin{description}
+  \item[Tariffs] Let $\tau_{ij}$ be the tariff rate imposed by country $j$ on imports from country $i$. If there are only tariffs in the model, then the price paid by the importing consumer is $p_{ij} = p_{ii} (1+\tau_{ij})$.
+  \item[Transport costs] A simple way to model transportation costs to assume that some fraction, $\xi_{ij}$, of the good is destroyed (it melts, rots, falls off the ship) on its way from country $i$ to $j$. This is commonly called an \textit{iceberg} transportation cost.
+
+      If there are only transport costs in the model, then the price paid by the importing consumer is $p_{ij} = p_{ii} (1+\xi_{ij})$.  In this case, $p_{ij}$ is the CIF price.
+\end{description}
+
+The form of the delivered price, $p_{ij}$, is identical in the two cases, but there are important differences between the two assumptions.  A tariff is a tax, and the tax revenue needs to be taken into account; typically it is lump-sum rebated to the consumer. An iceberg transport cost destroys resources; it should be accounted for in the feasibility constraint.
+
+%\newpage
+
+\setstretch{1.0}
+\setlength{\parskip}{0.0cm}
+\printbibliography
+
+
+
+
+\end{document} 
