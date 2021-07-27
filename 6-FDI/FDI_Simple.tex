@@ -1,0 +1,253 @@
+\documentclass[11pt, pdftex]{article}
+\usepackage{setspace,palatino,multirow}
+\usepackage{amsmath,amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{pdflscape}
+\usepackage{layout}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\usepackage{fancyhdr}
+    \setlength{\headheight}{16pt}
+    \pagestyle{fancy}
+    \rhead[]{Kim J. Ruhl}
+    \lhead[]{FDI I}
+    \cfoot[]{\textit{Subject to change.  This version \today.}}
+    \rfoot[]{ $|$ \thepage}
+
+\usepackage[pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue, bookmarks=true, pdfstartview={FitV}]{hyperref}
+
+%The line below is not a comment.  It is a command to winedt to include the bib file
+%GATHER{D:\\Dropbox\\Biblio\\bib_master.bib}
+
+%lanuage=american gets the punctuation within the quotes, natbib=true means use \citet as "\citeasnoun"
+\usepackage[backend=bibtex, natbib=true, sorting=nyt, style=authoryear, bibstyle=authoryear, isbn=false, language=american]{biblatex}
+    \addbibresource{D:\\Dropbox\\Biblio\\bib_master.bib}
+    \renewbibmacro{in:}{}           %Kill the default "in:"
+    \setlength\bibitemsep{0.25cm}
+
+%Kill the dot between volume and number, then add paren around the number.
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+%No header
+\DefineBibliographyStrings{english}{%
+  references = {------------------},
+}
+
+%titlesec definitions
+\titlespacing*\section{0pt}{0pt}{0pt}
+\titlespacing*\subsection{0pt}{0pt}{0pt}
+
+
+\setstretch{1.1}
+\raggedbottom
+
+\setitemize{itemsep=0.5ex}
+
+\setlength{\parskip}{0.2cm}
+\setlength{\voffset}{0.0cm}
+\setlength{\headsep}{5mm}           %space after header, before content
+\setlength{\parindent}{0cm}         %no indents
+\setlength{\textheight}{9.25in}
+
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\std}{\mathrm{std}}
+\newcommand{\cor}{\mathrm{cor}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\ph}{\phantom}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\sig}{\sigma}
+\newcommand{\lam}{\lambda}
+
+
+\begin{document}
+\ph{whatever}
+\medskip
+
+\centerline{\Large \bf Foreign Direct Investment I}
+\medskip
+[\textit{My notes are in beta.  If you see something that doesn't look right, I would greatly appreciate a heads-up.}]
+\section{FDI background}
+\textit{Foreign direct investment} (FDI) occurs when an enterprise owns a 10 percent or greater stake (voting securities or the equivalent) in an enterprise located in another country.  The investing enterprise is often called the \textit{parent} and the enterprise being invested in is often called the \textit{affiliate}. When a parent owns more than 50 percent of the affiliate's voting securities, the affiliate is called a \textit{majority-owned affiliate} (MOFA).  Economists are often most interested in MOFAs, since this arrangement guarantees that the parent has control of the affiliate.  The collection of the parent and its affiliates are known as \textit{multinational corporations} or \textit{multinational enterprises}.
+
+
+
+This is too simple (don't fret, we will complicate things later), but there are two basic ``technological'' motives for foreign direct investment.
+\begin{enumerate}
+  \item \textbf{Save on transportation costs.}  Rather than build the good in the home country and pay to ship it to the foreign country (trade), the parent uses a foreign affiliate to produce the good in the foreign country and sell it in the foreign country.  A good that is expensive to ship to a country with a large demand for the good might be a good candidate for this kind of FDI, often called \textit{horizontal FDI}. A variation of this is a plant located in a foreign country that sells not only to its host country, but also to surrounding countries.  This is \textit{export platform FDI}.
+  \item \textbf{Save on factor costs.} If it is possible to break the production process into parts, then a firm from a capital abundant country could produce the capital-intensive parts at home and the labor-intensive parts in a country with low labor costs. The two parts are joined to create the final good.  This kind of FDI is often called \textit{vertical FDI}.
+\end{enumerate}
+Most multinational firms do not fall neatly into one bucket or the other, but we can think of examples that mostly fit the bill. When McDonald's builds a store in Canada, it is doing so to sell burgers to Canadians: It is too expensive to ship a hot cheeseburger very far.  When Ford Motors builds an assembly plant in Mexico, it is doing so to use abundant Mexican labor to perform labor-intensive tasks, using parts that were designed and (some of them) built in the United States. Even these extreme cases are not perfect: McDonald's Canada receives some inputs from its parent, and Ford Mexico also sells cars in Mexico (horizontal) and in Central America (export platform).
+
+\subsection{Some stylized facts}
+The following six facts are from \citet{ayhandbook}:
+\begin{enumerate}
+  \item Multinational activity is primarily concentrated in developed countries where it is mostly
+    two-way. Developing countries are more likely to be the destination of multinational activity than the source.
+
+    \item The relative importance of multinationals in economic activity is higher in capital intensive
+    and R\&D intensive goods, and a significant share of two-way FDI flows is intraindustry in nature.
+
+    \item The production of the foreign affiliates of multinationals falls off in distance, but at a
+slower rate than either aggregate exports or parent exports of inputs to their affiliates.
+
+    \item Both the parents and the affiliates of multinational firms tend to be larger, more productive,
+    more R\&D intensive and more export oriented than non-multinational firms.
+
+    \item Within multinational enterprises, parents are relatively specialized in R\&D while affiliates
+    are primarily engaged in selling goods in foreign markets, particularly in their host market.
+
+    \item Cross-Border Mergers and Acquisitions make up a large fraction of FDI and are a particularly
+important mode of entry into developed countries.
+
+    \item From \citet{ramondoRapRuhl}: The median foreign affiliate of U.S. MNEs do not ship goods within the firm. The affiliates that do ship intrafirm are larger than those that do not. This is related to fact 5.
+
+\end{enumerate}
+
+See \citet{ramondoRapRuhl} for some firm-level facts regarding the activities of U.S. multinational firms. [Todo: write up some of these facts.]
+
+\section{A model of horizontal FDI}
+The basic tension in horizontal FDI is known as the \textit{proximity-concentration tradeoff}. By proximity, we mean that the firm can save on transportation costs by being close to the market it would like to serve.  By concentration, we mean that the firm would like to concentrate its production in one place, to capture returns to scale. The empirical prediction is that firms should be more likely to use horizontal FDI to serve markets that are big and/or expensive to ship to (usually proxied by gravity variables). An early empirical confirmation of these implications is \citet{B97}.
+
+\citet{HMY04} extends a standard \citet{melitz} style model to include a horizontal FDI choice.  There are $N$ countries and $H+1$ sectors.  The $H$ sectors are made up of differentiated varieties, and the ``plus 1" sector is a homogeneous traded good.  This is the usual trick to pin down wages in each country and make this a partial equilibrium  model.  Each country is endowed with labor.  Preferences\footnote{The NBER working paper has a lot more detail in it compared to the published version.} are Cobb-Douglas over sectors,
+\begin{equation}\label{eq:pref}
+    U= \sum_{h=1}^H \beta_h \log(c_h) + \left(1-\sum_{h=1}^H\beta_h \right)\log (c_0),
+\end{equation}
+which means that consumers spend fraction $\beta_h$ on each sector, and the remainder on the homogenous good. The sector good, $c_h$, is a CES aggregate of the sector varieties,
+\begin{equation}\label{eq:ces}
+    c_h=\left( \int c(\nu)^{\frac{\epsilon-1}{\epsilon}} \, d\nu \right)^{\frac{\epsilon}{\epsilon-1}}.
+\end{equation}
+
+\subsection*{Firms}
+Firms are monopolistic competitors within their industry. Notice that, because the super preferences are Cobb-Douglas, the share of total spending that goes to an industry is fixed, so the behavior of firms in the other industries does not affect the firm's choice.  This means that the firm's choice problem can be solved industry-by-industry.  Drop the $h$ subscript for now, and consider a firm in a given industry. To create a firm it hires $f_E$ units of labor. On entry, it draws its unit labor requirement $a$ from a distribution $G(a)$ which will be Pareto, to keep things tractable.  The production function is
+\begin{equation}\label{eq:prod}
+    y(a)=\frac{1}{a}\ell(a).
+\end{equation}
+After observing its $a$, the firm can
+ \begin{enumerate}
+   \item exit,
+   \item pay $f_D$ to serve the domestic market,
+   \item export, and pay $f_X$ per foreign market; an exported good incurs an iceberg cost of $\tau_{ij}>1$,
+   \item build a plant in a foreign market to serve it, and pay $f_I$ per market.
+ \end{enumerate}
+The difference between $f_X$ and $f_I$ is the return to scale advantage from exporting versus FDI.  If a firm builds a plant in country $j$ it cannot use it to serve country $k$ --- that is, export platform FDI is ruled out by assumption.
+
+Firms charge the usual markup over marginal cost. A firm of type $a$ in country $i$ selling to country $j$ charges
+\begin{equation}
+    p_{ij}(a) = \tau_{ij}\frac{\epsilon}{\epsilon-1}w^ia,
+\end{equation}
+where $\tau_{ii}=1$. The firm's profit in the domestic market is
+\begin{equation}\label{eq:dprofit}
+    \pi^i_D(a) = (w^ia)^{1-\epsilon} \epsilon^{-1} \left(\frac{\epsilon-1}{\epsilon}\right)^{\epsilon-1}\beta_h (w^iL^i+\Pi^i)(P^i)^{\epsilon-1}-w^if_D
+\end{equation}
+where $P^i$ is the aggregate price index in industry $h$ in country $i$. The additional profits from exporting to $j$ are
+\begin{equation}\label{eq:xprofit}
+    \pi^{ij}_X(a) = (\tau_{ij}w^ia)^{1-\epsilon} \epsilon^{-1} \left(\frac{\epsilon-1}{\epsilon}\right)^{\epsilon-1}\beta_h (w^jL^j+\Pi^j)(P^j)^{\epsilon-1}-w^jf_X,
+\end{equation}
+and the additional profits from operating in $j$ using FDI is
+\begin{equation}\label{eq:iprofit}
+    \pi^{ij}_I(a) = (w^ja)^{1-\epsilon} \epsilon^{-1} \left(\frac{\epsilon-1}{\epsilon}\right)^{\epsilon-1}\beta_h (w^jL^j+\Pi^j)(P^j)^{\epsilon-1}-w^jf_I.
+\end{equation}
+Notice that the profit from exporting includes a transportation cost, and the relevant wage for production is the home country wage.  In the FDI profit function, there are no transportation costs, and the the relevant production wage is the host country wage, since production will require country $j$ labor.
+
+As usual, the variable profit from serving a market is linear in $a^{1-\epsilon}$.  Since $\epsilon>1$, this increases with labor productivity, $1/a$.  Figure 1 in the paper plots the profit functions for the symmetric case with $(w^iL^i+\Pi^i)(P^i)^{\epsilon-1}=(w^jL^j+\Pi^j)(P^j)^{\epsilon-1}$, which means that the ``market size" of the two countries are identical and with the wage equal one in both countries.
+
+Check out figure 1 in the paper. Notice that
+\begin{itemize}
+\item $\pi_D$ and $\pi_I$ are parallel, the unit contribution to profit is the same in each case [this is not true if wages are different across countries]
+\item $\pi_X$ is steeper than the others; the trade costs does this
+\item $f_I > f_X > f_D$; building a plant abroad is most expensive, and building export capacity if more expensive than serving the domestic market (a tighter assumption on these costs is coming)
+\end{itemize}
+From the figure, it is easy to see that the model is characterized by three cutoff productivity levels $a_I^{ij}>a_X^{ij}>a_D^i$. To ensure that this ordering is the equilibrium one, we assume
+\begin{equation}
+    \left(\frac{w^j}{w^i}\right)^{\epsilon-1}f_I>\tau_{ij}^{\epsilon-1}f_X>f_D.
+\end{equation}
+Since $\epsilon>1$ the penalty from exporting it greater than one. The worse the marginal cost of exporting is, the smaller the fixed cost to export has to be in order to keep the marginal exporter more productive than the domestic producer. The cross-country wage gap acts in a similar way for FDI: the more expensive it is to operate abroad, the smaller the fixed cost needs to be to generate the ``right'' ordering.
+
+
+To find these cutoff values, solve [where $B$ is a country specific term ``market size'' term]
+\begin{align}
+  \left(w^ia^i_D\right)^{1-\epsilon}B^i&=w^if_D \label{eq:cutD}\\
+  \left(w^i\tau_{ij}a^{ij}_X\right)^{1-\epsilon}B^j&=w^jf_X \label{eq:cutX}\\
+  [(w^j)^{1-\epsilon}-(w^i\tau_{ij})^{1-\epsilon}]\left(a^{ij}_I\right)^{1-\epsilon}B^j&=w^jf_I-w^jf_X \label{eq:cutF}
+\end{align}
+\subsection*{Export and affiliate sales}
+In the symmetric country case, sales from $i$ to $j$ by exporters and foreign affiliates from $i$ are
+\begin{align}
+    S_X^{ij}&=\theta_j \tau_{ij}^{1-\epsilon}\int_{a_I}^{a_X}y^{1-\epsilon}\,dG(y)\\
+    S_I^{ij}&=\theta_j \int_{0}^{a_I}y^{1-\epsilon}\,dG(y)
+\end{align}
+where $\theta$ is a market-specific constant. Let $V(a) = \int_0^a y^{1-\epsilon}\,dG(y)$. The integral in the export sales equation can be written as $V(a_X)-V(a_I)$, the integral in the FDI sales equation is $V(a_I)$, and the ratio of their sales (also of their market shares) is
+\begin{equation}\label{eq:relshares}
+    \frac{s_X^{ij}}{s_I^{ij}}=\tau^{1-\epsilon} \left[ \frac{V(a_X)}{V(a_I)}-1 \right].
+\end{equation}
+If $G(a)$ is Pareto, $G(x)=1-(b/x)^k$, this simplifies to
+\begin{equation}\label{eq:relshares2}
+    \frac{s_X^{ij}}{s_I^{ij}}=\tau^{1-\epsilon} \left[ \left(\frac{a_X}{a_I}\right)^{k-(\epsilon-1)}-1 \right]
+\end{equation}
+and solving the cutoff equations \eqref{eq:cutX} and \eqref{eq:cutF} for $a_X$ and $a_I$ yields
+\begin{equation}
+  \left(\frac{a_X^{ij}}{a_I^{ij}}\right)^{\epsilon-1} = \frac{f_I-f_X}{f_X} \left[\left(\frac{w^i}{w^j}\tau_{ij}\right)^{\epsilon-1}-1\right]^{-1}
+\end{equation}
+\begin{equation}\label{eq:relshares3}
+    \frac{s_X^{ij}}{s_I^{ij}}=\tau^{1-\epsilon} \left[ \left(\frac{f_I-f_X}{f_X} \frac{1}{\tau^{\epsilon-1}-1}\right)^{\frac{k-(\epsilon-1)}{\epsilon-1}}-1 \right]
+\end{equation}
+This equation is the basis of the reduced-form empirical exercise. Exports, relative to foreign affiliate sales, are greater when
+\begin{enumerate}
+  \item $\tau$ is smaller (remember, $1-\epsilon<0$): this is \textbf{proximity}
+  \item the extra costs of FDI relative to exporting are larger $(f_I-f_X)/f_X$: this is \textbf{concentration}
+  \item lower productivity dispersion (bigger $k$)
+  \item lower elasticity of substitution (sensitivity to $\tau$, and heterogeneity)
+
+\end{enumerate}
+The first two mechanisms are the standard proximity-concentration tradeoff.  The trade cost condition says that when trade costs are small, you should see relatively more exports compared to affiliate sales.  The second item says that when the incremental investment for FDI is larger, you should see less of it.
+
+Item three is new to the FDI literature, but not to the ``trade" literature.  The more variance there is in the productivity distribution, the more likely you are to see big firms, and big firms are more likely to be multinationals.
+
+The elasticity of substitution governs the sensitivity of profits to things like $\tau$ and the dispersion of productivity.  If goods are very elastic (large $\epsilon$), profit is very sensitive to changes in price.  Trade costs increase export prices, so $\epsilon$ is important in determining the desirability of exporting.
+
+\subsection*{Empirics}
+Equation \ref{eq:relshares3} is the basis for estimation.  Stick $h$ back on the industry variables.  Set the home country to be the United States (that's the data).  Then \eqref{eq:relshares3} becomes
+\begin{equation}\label{eq:relshares3}
+    \frac{s_X^{ij}}{s_I^{ij}}=(w^j\tau_{h}^{ij})^{1-\epsilon_h} \left[ \left(\frac{f_{hI}-f_{hX}^j}{f_{hX}^j} \frac{1}{(w^j\tau_h^{ij})^{\epsilon_h-1}-1}\right)^{\frac{k_h^i-(\epsilon_h-1)}{\epsilon_h-1}}-1 \right]
+\end{equation}
+Then linearize this to yield an estimating equation
+\begin{equation}\label{eq:relshares3}
+   \log\left( \frac{s_X^{ij}}{s_I^{ij}}\right)=\gamma_0\log(\tau_{h}^{ij}) + \gamma_1 \log \left( \frac{f_{hI}-f_{hX}^j}{f_{hX}^j}\right) + \gamma_2 \log\left(\frac{k_h^i-(\epsilon_h-1)}{\epsilon_h-1}\right) + \mu^j+\xi_{jh}
+\end{equation}
+where $\mu^j$ is a set of host country fixed effects to control for  differences in the fixed costs and the wages between $i$ and $j$.
+\begin{itemize}
+    \item Identification is driven by the cross sectional differences in country and industry.
+  \item Trade costs: measured tariffs and transportation costs, by industry-host country
+  \item Fixed costs: the $f_X^j$ part is included in the country fixed effect. What remains is the cost of adding capacity.  Use the average number of \textit{non production} workers per plant in the data.  This is not a perfect measure, but this is a hard variable to get a grip on.
+  \item Dispersion: given the Pareto assumption, the firm size distribution, in terms of sales, is distributed Pareto with parameter $k-(\epsilon-1)$. A property of the Pareto distribution is that regressing the log rank of a firm on its log sales
+      \[
+      \log(x_i) = \log(\underline{x}^{k-(\epsilon-1)}) + (k-(\epsilon-1)) \log( \text{rank}(i) ) + \epsilon_i
+      \]
+      will recover the Pareto shape coefficient, $k-(\epsilon-1)$. Do this for some aggregated U.S. data, and firm level European data. Industries differ significantly in terms of the size dispersion.  See figures 2 and 3.
+  \item Stick industry capital-labor ratios and R\&D intensity in there to control for observable differences across industries.
+\end{itemize}
+
+Table 3: Things work the way they should.  Trade costs decrease the relative importance of exporting, non production workers increase the importance of exporting. These are further affirmations of the proximity-concentration tradeoff, as in \citet{B97}.  The dispersion measures are large and significant, so this new channel seems to be in the data.
+
+That the underlying distribution of ``competitiveness" in an industry is an important determinant of the industry's structure is a common idea in the industrial organization literature.  [Todo: cites. Sutton?] It's in the trade literature too.  This is at work in the standard Melitz-style model.  In a model without the FDI margin, the dispersion in an industry still matters for export behavior.
+
+\newpage
+\setstretch{1.0}
+\setlength{\parskip}{0.0cm}
+\printbibliography
+
+\end{document}

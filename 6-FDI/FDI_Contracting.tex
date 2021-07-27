@@ -1,0 +1,197 @@
+\documentclass[11pt, pdftex]{article}
+\usepackage{setspace,palatino,multirow}
+\usepackage{amsmath,amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{pdflscape}
+\usepackage{layout}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\usepackage{fancyhdr}
+    \setlength{\headheight}{16pt}
+    \pagestyle{fancy}
+    \rhead[]{Kim J. Ruhl}
+    \lhead[]{FDI II}
+    \cfoot[]{\textit{Subject to change.  This version \today.}}
+    \rfoot[]{ $|$ \thepage}
+
+\usepackage[pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue, bookmarks=true, pdfstartview={FitV}]{hyperref}
+
+%The line below is not a comment.  It is a command to winedt to include the bib file
+%GATHER{C:\\Users\\kruhl\\Dropbox\\Tools\\bib_master.bib}
+
+%lanuage=american gets the punctuation within the quotes, natbib=true means use \citet as "\citeasnoun"
+\usepackage[backend=bibtex, natbib=true, sorting=nyt, style=authoryear, bibstyle=authoryear, isbn=false, language=american]{biblatex}
+    \addbibresource{D:\\Dropbox\\Tools\\bib_master.bib}
+    \renewbibmacro{in:}{}           %Kill the default "in:"
+    \setlength\bibitemsep{0.25cm}
+
+%Kill the dot between volume and number, then add paren around the number.
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+%No header
+\DefineBibliographyStrings{english}{%
+  references = {------------------},
+}
+
+%titlesec definitions
+\titlespacing*\section{0pt}{0pt}{0pt}
+\titlespacing*\subsection{0pt}{0pt}{0pt}
+
+
+\setstretch{1.1}
+\raggedbottom
+
+\setitemize{itemsep=0.5ex}
+
+\setlength{\parskip}{0.2cm}
+\setlength{\voffset}{0.0cm}
+\setlength{\headsep}{5mm}           %space after header, before content
+\setlength{\parindent}{0cm}         %no indents
+\setlength{\textheight}{9.25in}
+
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\std}{\mathrm{std}}
+\newcommand{\cor}{\mathrm{cor}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\ph}{\phantom}
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\sig}{\sigma}
+\newcommand{\lam}{\lambda}
+
+
+\begin{document}
+\ph{whatever}
+\medskip
+
+\centerline{\Large \bf Foreign Direct Investment II}
+\medskip
+[\textit{My notes are in beta.  If you see something that doesn't look right, I would greatly appreciate a heads-up.}]
+\section{The boundary of the firm}
+There is a large literature that takes as given the parent firm's ability and desire to own its foreign affiliate. Why \textit{own} the foreign affiliate? The parent could license the ability to produce the good to another company (Coca Cola does this) or source inputs from unrelated firms (GM spun off the part-maker Delco). This is a question about the boundary of the firm, so it is not surprising that IO models are a useful place to start thinking about this question.
+
+In this note we will lay out a simple model in which contract incompleteness creates incentive problems between the producers of two kinds of goods, both of which are needed to produce a final good. Depending on which of the goods is more important for production, different organizational structures of the firm can alleviate incentive problems.
+\subsection{The model}
+This discussion follows \citet{antrashelpman}.
+
+ There are two countries: North and South. Only the North can produce final goods. That lines up with fact 1 in the earlier note on FDI. A final good $i$ firm pays $f_E$ to draw a productivity, $\theta(i)$. Production requires headquarter services $h$ and manufactured components, $m$.
+\begin{equation}\label{eq:prod}
+    x_j(i)=\theta(i)\left[\frac{h(i)}{\eta_j}\right]^{\eta_j}\left[\frac{m(i)}{1-\eta_j}\right]^{1-\eta_j}
+\end{equation}
+The larger is $\eta_j$ the more headquarters-intensive is the industry. Good $h$ is produced only in the North with $h(i)=L(i)$. Good $m$ can be produced in the North or South using $m(i)=L(i)$.  In deriving the optimal firm organization, we will drop the $j$ and focus on one industry. Afterward, we can think about how the organizational from changes as $\eta_j$ changes. Note that $h$ and $m$ are indexed by $i$; these are goods that can only be used by firm $i$. This is important, since it limits the value of these goods outside of the firm.
+
+Once a final good firm enters, it decides how to procure $m$: outsource domestically (O,N) or abroad (O,S) or integrate domestically (V,N) or abroad (V,N). [or to not produce at all] Assume fixed costs from these options are
+\begin{equation}\label{eq:fixed}
+    f_V^S>f_O^S>f_V^N>f_O^N
+\end{equation}
+This is an assumption that the economies of scope from integration are smaller than the added management burdens ($f_V>f_O$). This is also an assumption that, compared to the North, it is more expensive to set up either integrated or outsourced relationships in the South. This may reflect poorer institutional quality in the South (contract enforcement?) or more costly monitoring.
+
+\subsection{Contracting}
+Contracts are incomplete. Assume that no ex ante contract can be enforced. (There are assumptions on primatives that make this possible, but are abstracted from here.) This means that producers will bargain ex post. The final good producer has bargaining power $\beta$ over the ex post gains from trade.
+
+It follows from CES consumer demand and the production function that the potential revenue from production is
+\begin{equation}\label{eq:rev}
+    R(i)=p\left(i \right) x\left(i \right)=X^{\mu-\alpha}\theta(i)^{\alpha}\left[\frac{h(i)}{\eta }\right]^{\eta \alpha}\left[\frac{m(i)}{1-\eta}\right]^{(1-\eta)\alpha}.
+\end{equation}
+
+
+Under outsourcing, the Nash problem is
+\begin{equation}\label{eq:nash_out}
+    \max \left(R\left(i\right)-0\right)^\beta\left(R\left(i\right)-0\right)^{1-\beta}
+\end{equation}
+The outside options for both firms are zero, since the outsourced firm has property rights over the components (so the final good firm cannot use them) and the component can only be used by final good firm $i$ (so they are of no value to the component firm). The solution: headquarters firm get $\beta R(i)$ and component firm gets $(1-\beta) R(i)$.
+
+The integrated firm still bargains, but the headquarter firm can fire the manager and seize the components if they fail to agree. The headquarters firm loses some sales. In particular, the final good firm can create $\delta^\ell x(i)$, with $\delta^N>\delta^S$, if it produces without the component firm's intangible input. So the final good firm's outside option is $\left(\delta^\ell\right)^{\alpha}R\left(i\right)$ and the component firm's outside option is still zero.
+\begin{equation}\label{eq:nash_vert}
+    \max \left(R\left(i\right)-\left(\delta^\ell\right)^{\alpha}R\left(i\right)\right)^\beta\left(R\left(i\right)-0\right)^{1-\beta}
+\end{equation}
+The solution: headquarters firm get $(\delta^\ell)^{\alpha}R(i)+ \beta[1-(\delta^\ell)^{\alpha}] R(i)$ and component firm gets $(1-\beta) [1-(\delta^\ell)^{\alpha}]R(i)$.
+
+\textbf{Big point}. The difference between outsourcing and integrating is about the property rights to the components in the case that the firms do not come to an agreement.
+
+Write equation 5 from the paper on the board. [Todo: add it here.] A final good firm gets a larger share of the revenue by integrating in the North than by integrating in the South; integrating in either location earns the final good firm a greater share of revenue than then outsourcing. This is because the final good firm keeps control of the components if bargaining fails. Its larger outside option gives it more power.
+
+For a given structure of the firm, the headquarters firm solves
+\begin{equation}\label{eq:hmax}
+    \max \beta_k^\ell R(i) - w^Nh(i)
+\end{equation}
+
+and the components firms solves
+\begin{equation}\label{eq:hmax}
+    \max (1-\beta_k^\ell) R(i) - w^\ell m(i)
+\end{equation}
+
+Solve these and substitute the decision rules into the profit function to yield the profit to the final good firm. This is also where we can see the underprovision of components: compare the first-order condition of the component firm to what it would be if the final good firm were to choose component production.
+
+Write equations 6 and 7 from the paper on the board.
+
+The final good firm chooses the organizational form to solve
+
+\begin{equation}\label{eq:maxpi}
+    \pi(\theta, X, \eta) = \max \left \{ \pi_V^N (\theta, X, \eta), \pi_O^N (\theta, X, \eta), \pi_V^S (\theta, X, \eta), \pi_O^S (\theta, X, \eta) \right \}
+\end{equation}
+
+and the free entry condition determines the lowest-$\theta$ firm in operation, $\underline{\theta}$,
+\begin{equation}\label{eq:free}
+    \int_{\underline{\theta}(X)}^\infty \pi(\theta,X,\eta) \, dG(\theta) - w^Nf_E=0.
+\end{equation}
+
+\textbf{The contract shape.}  The final good producer can only choose  from these four choices. Suppose, however, that it could choose $\beta  \in [0,1]$. If it could, it would choose equation 10 from the paper. Note the tension. The greater is $\beta$, the larger is the share of revenue the final firm earns, but the less incentive the component firm has to provide its good. [This is the classic underinvestment problem that arises from not having complete contracts.] As components become less important ($\eta$ grows) $\beta^*$ increases.
+
+Show figure 1.
+\begin{itemize}
+\item The Cobb-Douglas complete contracting solution would lie on the 45-degree line; factors are paid their products.
+\item The solid line is monotonically increasing in $\eta$. As the share of headquarters services become more important, give the headquarters firm a larger share of the revenue.
+
+\item When components are more important, the headquarters firm still takes too large a share (the solid line lies above the 45-degree line) so we have underinvestment in components.
+
+\item The opposite is true when headquarters services are more important.
+\end{itemize}
+\subsection{Firm organization}
+Look at figure 1 again. Compare the optimal $\beta$ to the three values defined in (5). Look at two kinds of industries: component intensive and headquarters intensive.
+\begin{itemize}
+\item In the manufacturing intensive industry, the three $\beta_k^\ell$ are above the curve. The firm would like to get as close to the solid line as possible. In this case, the best choice is to outsource, regardless of country choice: $\beta = \beta^N_O < \beta^N_V$ and $f_V^N > f_O^N$; $\beta = \beta^S_O < \beta^S_V$ and $f_V^S > f_O^S$. \textbf{Never integrate the firm in this case.}
+
+    In which country should the final good firm source parts? Here we tradeoff larger fixed costs in S to lower variable costs. This is the usual heterogeneous agent model thing; more productive firms go to the South, less productive firms go to the North, and the least productive exit. See figure 3 in the paper for an example in which wage differential is small compared to the fixed cost differential.
+
+\item In the headquarters intensive industry the tradeoffs are more complicated.
+
+The more important headquarters services generate gains from integration, since the extra disincentive to the component firm is not as important. The slope of $\pi_V^\ell$ is steeper than $\pi_O^\ell$ for both countries.
+
+The relative slopes of $\pi^N_V$ and $\pi^S_O$ depend on the relative wages in the two countries the betas. This is a tradeoff of production cost savings from going South versus greater incentives for headquarters firm from integrating.
+Lots can happen here. Their preferred arrangement is in figure 4. Note that as long as $\theta$ is unbounded, Southern integration will always happen. The other forms may not exist, but should appear in the order dictated in figure 2.
+
+\end{itemize}
+
+In general:
+
+\begin{itemize}
+  \item High productivity firms source inputs from the South and low productivity firms source inputs from the North. [Fact 1.]
+
+  \item Within the set of firms that sources from a particular country, high-productivity firms are more likely to insource. [Fact 4.]
+
+  \item Headquarter intensive industries are more likely to integrate.  [Facts 2 and 4.]
+\end{itemize}
+
+
+
+
+\newpage
+\setstretch{1.0}
+\setlength{\parskip}{0.0cm}
+\printbibliography
+
+\end{document}
